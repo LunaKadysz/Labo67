@@ -28,8 +28,7 @@ class Muestra:
             self.heater = heater
         else: # muestras rectangulares o cuadradas. 
             self.contactos = contactos
-            self.R = {f'{i}': []   for i in list(combinations(range(1,self.contactos+1),2))}
-            self.R_error = {f'{i}': []   for i in list(combinations(range(1,self.contactos+1),2))}
+
         #genero las resistencias
     
     def cargar_resistencias(self):
@@ -45,33 +44,15 @@ class Muestra:
         rango = list(df_rango[df_rango['nombre'] == self.nombre]['rango'])[0]
         
         #atributo de resistencia
-        muestra['R_error'] = [R for i,R in enumerate(muestra['R_avg'])] 
-        df['Price'] = [1500 if x =='Music' else 800 for x in df['Event']]
-        
+        muestra['R_error'] = [self.get_error_multimetro(df_error_multimetro, muestra, i, R, rango) for i,R in enumerate(muestra['R_avg'])] 
         self.R = muestra
-        
-        
-        for ij in self.R:
-            #lista con los datos de R_ij
-            
-            R_ij = muestra[ij]['R_avg']
-        
-            self.R[ij] = R_ij
-            
-            #ahora construimos el error
-            m,b = self.get_error_multimetro(df_error_multimetro,rango, R_ij) #llama a la funcion
-            c_a = R_ij * m / 100 + b #error aparato
-            c_b = (muestra[ij]['R_max'] - muestra[ij]['R_min'])/np.sqrt(100) #error estadistico
-            self.R_error[ij] = c_a + c_b
-            
-    def get_error_multimetro(self,df, muestra,i,R,rango):
+
+    def get_error_multimetro(self,df_e, muestra,i,R,rango):
         #pongo como condicion que para que sea del rango 0< R/Rango <1
-        df_error = df.loc[R/(df['Range']> 0) & (R/df['Range']< 1) & (df['Range2']== rango)]
+        df_error = df_e[((R/df_e['Range']).max()> 0) & ((R/df_e['Range'])< 1) & (df_e['Range2']== f' {rango}')]
         coefs = list(df_error['1 Year 23°C + 5°C'])[0].split('+')
         m = float(coefs[0])
         b = float(coefs[1])
         c_a = R * m / 100 + b #error aparato
         c_b = (muestra['R_max'][i] - muestra['R_min'][i])/np.sqrt(100) #error estadistico
         return c_a + c_b
-
-
