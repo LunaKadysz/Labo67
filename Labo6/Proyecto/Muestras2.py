@@ -10,8 +10,8 @@ import pandas as pd
 import numpy as np
 import os
 
-#path_abs = r'C:\Users\Usua\Documents\UBA\Labo6-7\Labo67\Labo6\Proyecto'
-path_abs = r'C:\Users\Usuario\Documents\luna_kadysz\Labo67\Labo6\Proyecto'
+path_abs = r'C:\Users\Luna\Documents\UBA\Labo6-7\Labo67\Labo6\Proyecto'
+#path_abs = r'C:\Users\Usuario\Documents\luna_kadysz\Labo67\Labo6\Proyecto'
 os.chdir(path_abs)
 #os.getcwd()
 
@@ -31,10 +31,19 @@ class Muestra:
 
         #genero las resistencias
     
-    def cargar_resistencias(self):
+    def set_resistencias(self):
+        """
+        Esta funcion le carga a cada instancia de muestra
+        las resistencias medidas a temperatura ambiente
+
+        """
         #cargo el archivo donde tengo los valores de resistencia
         path = f'data/Mediciones1/{self.nombre}.csv'
-        muestra = pd.read_csv(path, names=['i','j','R_min','R_max','R_avg'], header=None).drop(0).dropna()
+        muestra = pd.read_csv(path, names=['i','j','R_min','R_max','R_avg'], header=None).drop(0).dropna().reset_index()
+        
+        #aca emprolijo la notacion de indices: (i -> i, j) -> j como enteros
+        muestra['i'] = [int(ind.split('(')[1]) for ind in muestra['i']]
+        muestra['j'] = [int(ind.split(')')[0]) for ind in muestra['j']]
         
         #cargo el archivo donde tengo la tabla de errores del multimetro
         df_error_multimetro = pd.read_csv('data/error_multimetro_R.csv')
@@ -48,11 +57,17 @@ class Muestra:
         self.R = muestra
 
     def get_error_multimetro(self,df_e, muestra,i,R,rango):
+        """
+        Esta funcion se usa dentro del metodo del metodo que carga resistencias a 
+        temperatura ambiente para asignarle el error a cada medicion.
+
+        """
+        
         #pongo como condicion que para que sea del rango 0< R/Rango <1
-        df_error = df_e[((R/df_e['Range']).max()> 0) & ((R/df_e['Range'])< 1) & (df_e['Range2']== f' {rango}')]
+        df_error = df_e[((R/df_e['Range'])> 1/1000) & ((R/df_e['Range'])< 1) & (df_e['Range2']== f' {rango}')]
         coefs = list(df_error['1 Year 23°C + 5°C'])[0].split('+')
         m = float(coefs[0])
         b = float(coefs[1])
         c_a = R * m / 100 + b #error aparato
-        c_b = (muestra['R_max'][i] - muestra['R_min'][i])/np.sqrt(100) #error estadistico
+        c_b = (float(muestra['R_max'][i]) - float(muestra['R_min'][i]))/np.sqrt(100) #error estadistico
         return c_a + c_b
