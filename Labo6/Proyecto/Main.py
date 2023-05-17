@@ -9,8 +9,8 @@ Created on Mon May  8 08:50:17 2023
 import Muestras2 as ms
 import matplotlib.pyplot as plt
 
-path_abs = r'C:\Users\Luna\Documents\UBA\Labo6-7\Labo67\Labo6\Proyecto'
-#path_abs = r'C:\Users\Usuario\Documents\luna_kadysz\Labo67\Labo6\Proyecto'
+#path_abs = r'C:\Users\Luna\Documents\UBA\Labo6-7\Labo67\Labo6\Proyecto'
+path_abs = r'C:\Users\Usuario\Documents\luna_kadysz\Labo67\Labo6\Proyecto'
 ms.os.chdir(path_abs)
 #os.getcwd()
 
@@ -27,7 +27,12 @@ for j,file in enumerate(ms.os.listdir('data/Mediciones1')): #estoy diciendo que 
     
     if len(muestra_i.R['R_avg'])>0:
         plt.figure()
-        plt.plot(muestra_i.R['R_avg'])
+        plt.title(muestra_i.nombre)
+        #plt.plot(muestra_i.R['R_avg'])
+        for i in range(1,muestra_i.R['i'].max()+1):
+            df_i = muestra_i.R[muestra_i.R['i']==i]
+            plt.errorbar(range(i,len(df_i)+i),df_i['R_avg'],yerr=df_i['R_error'],fmt='-o',label=f'{i}')
+            plt.legend()
     
 #%% 
 
