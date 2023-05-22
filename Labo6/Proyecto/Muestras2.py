@@ -10,8 +10,8 @@ import pandas as pd
 import numpy as np
 import os
 
-#path_abs = r'C:\Users\Luna\Documents\UBA\Labo6-7\Labo67\Labo6\Proyecto'
-path_abs = r'C:\Users\Usuario\Documents\luna_kadysz\Labo67\Labo6\Proyecto'
+path_abs = r'C:\Users\Luna\Documents\UBA\Labo6-7\Labo67\Labo6\Proyecto'
+#path_abs = r'C:\Users\Usuario\Documents\luna_kadysz\Labo67\Labo6\Proyecto'
 os.chdir(path_abs)
 #os.getcwd()
 
@@ -31,14 +31,16 @@ class Muestra:
 
         #genero las resistencias
     
-    def set_resistencias(self):
+    def set_resistencias_mediciones_amb(self):
         """
         Esta funcion le carga a cada instancia de muestra
         las resistencias medidas a temperatura ambiente
 
         """
+        self.medicion_amb = type("medicion", (),{})()
+        
         #cargo el archivo donde tengo los valores de resistencia
-        path = f'data/Mediciones1/{self.nombre}.csv'
+        path = f'data/mediciones_amb/{self.nombre}.csv'
         muestra = pd.read_csv(path, names=['i','j','R_min','R_max','R_avg'], header=None).drop(0).dropna().reset_index()
         
         #aca emprolijo la notacion de indices: (i -> i, j) -> j como enteros
@@ -54,7 +56,41 @@ class Muestra:
         
         #atributo de resistencia
         muestra['R_error'] = [self.get_error_multimetro(df_error_multimetro, muestra, i, R, rango) for i,R in enumerate(muestra['R_avg'])] 
-        self.R = muestra
+        self.medicion_amb.R = muestra
+
+
+
+
+    def set_resistencias_mediciones_nit(self):
+            """
+            Esta funcion le carga a cada instancia de muestra
+            las resistencias medidas a temperatura ambiente
+    
+            """
+            self.medicion_nit = type("medicion", (),{})()
+            
+            #cargo el archivo donde tengo los valores de resistencia
+            path = f'data/mediciones_nit/{self.nombre}.csv'
+            #muestra = pd.read_csv(path, names=['i','j','R_avg','R_min','R_max'], header=None).drop(0).dropna().reset_index()
+            muestra = pd.read_csv(path).drop(0).dropna().reset_index()
+            
+            #aca emprolijo la notacion de indices: (i -> i, j) -> j como enteros
+            muestra['i'] = [int(ind) for ind in muestra['i']]
+            muestra['j'] = [int(ind) for ind in muestra['j']]
+            
+            #cargo el archivo donde tengo la tabla de errores del multimetro
+            df_error_multimetro = pd.read_csv('data/error_multimetro_R.csv')
+            
+            #cargo el archivo donde tengo las unidades de resistencia de cada muestra (ej: rango=ko,Mo,etc)
+            df_rango = pd.read_csv('data/rango.csv')
+            rango = list(df_rango[df_rango['nombre'] == self.nombre]['rango'])[0]
+            
+            #atributo de resistencia
+            muestra['R_error'] = [self.get_error_multimetro(df_error_multimetro, muestra, i, R, rango) for i,R in enumerate(muestra['R_avg'])] 
+            self.medicion_nit.R = muestra
+
+
+
 
     def get_error_multimetro(self,df_e, muestra,i,R,rango):
         """
