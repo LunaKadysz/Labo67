@@ -31,7 +31,7 @@ ins.write('MEASUREMENT MENU:AC FILTER:SLOW') #NO FUNCIONA
 ins.write('SAMPLE:COUNT 1')
 print(f"SAMPLE COUNT: {ins.query('SAMPLE:COUNT?')}")
 
-ins.write('TRIGGER:SOURCE EXT')
+ins.write('TRIGGER:SOURCE BUS')
 print(f"TRIGGER: {ins.query('TRIGGER:SOURCE?')}")
 #ins.write('MEASUREMENT MENU:RESOLUTION:6 DIGITS')
 
@@ -40,14 +40,17 @@ print(f"TRIGGER: {ins.query('TRIGGER:SOURCE?')}")
 
 #%%
 #Mido
-ins.timeout = 50000
-ins.query("INITIATE")
+#ins.timeout = 50000
+Rs = ins.query_ascii_values(':READ?')
 print('Comienzo medicion')
+
+"""
+#No funciona:
 ins.assert_trigger()
 ins.wait_for_srq()
 print('Medicion completa')
 Rs = ins.query_ascii_values("TRACE:DATA?")
-
+"""
 
 #%%
 # caluclar promedio
@@ -61,8 +64,8 @@ df = pd.DataFrame({'i': [], 'j': [], 'R_avg':[], 'R_min':[], 'R_max':[]})
 #sin trigger porque no me funciona
 #20 mediciones es aprox 10s
 
-i =9
-j =10
+i ='a_2_1'
+j ='a_1_1'
 
 R = []
 a = time.time()
@@ -76,5 +79,5 @@ df = df.append({'i': i, 'j': j,'R_avg':np.mean(R),'R_min':min(R),'R_max':max(R)}
 
 
 #%%
-df.to_csv('data/mediciones_nit/05G-ULF.csv', index=False)
+df.to_csv('data/mediciones_nit/M2-3.csv', index=False)
 

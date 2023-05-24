@@ -10,11 +10,11 @@ import pandas as pd
 import numpy as np
 import os
 
-path_abs = r'C:\Users\Luna\Documents\UBA\Labo6-7\Labo67\Labo6\Proyecto'
-#path_abs = r'C:\Users\Usuario\Documents\luna_kadysz\Labo67\Labo6\Proyecto'
+#path_abs = r'C:\Users\Luna\Documents\UBA\Labo6-7\Labo67\Labo6\Proyecto'
+path_abs = r'C:\Users\Usuario\Documents\luna_kadysz\Labo67\Labo6\Proyecto'
 os.chdir(path_abs)
 #os.getcwd()
-
+#%%
 class Muestra:
     def __init__(self, nombre, tipo, anillos, contactos, soldaduras, heater):
         self.nombre = nombre
@@ -74,6 +74,11 @@ class Muestra:
             #muestra = pd.read_csv(path, names=['i','j','R_avg','R_min','R_max'], header=None).drop(0).dropna().reset_index()
             muestra = pd.read_csv(path).drop(0).dropna().reset_index()
             
+            muestra[['R_avg','R_min','R_max']] = muestra[['R_avg','R_min','R_max']]/1000
+            
+            #limpio los ovld
+            muestra = muestra[muestra['R_avg']<1000].dropna().reset_index()
+
             #aca emprolijo la notacion de indices: (i -> i, j) -> j como enteros
             muestra['i'] = [int(ind) for ind in muestra['i']]
             muestra['j'] = [int(ind) for ind in muestra['j']]
@@ -107,3 +112,5 @@ class Muestra:
         c_a = R * m / 100 + b #error aparato
         c_b = (float(muestra['R_max'][i]) - float(muestra['R_min'][i]))/np.sqrt(100) #error estadistico
         return c_a + c_b
+    
+        
