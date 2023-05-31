@@ -40,8 +40,8 @@ print(f"TRIGGER: {ins.query('TRIGGER:SOURCE?')}")
 
 #%%
 #Mido
-#ins.timeout = 50000
-Rs = ins.query_ascii_values(':READ?')
+ins.timeout = 5000
+Rs = ins.query_ascii_values('READ?')
 print('Comienzo medicion')
 
 """
@@ -64,8 +64,8 @@ df = pd.DataFrame({'i': [], 'j': [], 'R_avg':[], 'R_min':[], 'R_max':[]})
 #sin trigger porque no me funciona
 #20 mediciones es aprox 10s
 
-i ='a_2_1'
-j ='a_1_1'
+i = 9
+j = 10
 
 R = []
 a = time.time()
@@ -79,5 +79,5 @@ df = df.append({'i': i, 'j': j,'R_avg':np.mean(R),'R_min':min(R),'R_max':max(R)}
 
 
 #%%
-df.to_csv('data/mediciones_nit/M2-3.csv', index=False)
+df.to_csv('data/mediciones_nit/NPL.csv', index=False)
 
