@@ -19,7 +19,7 @@ info_muestras = ms.pd.read_excel('data/info_muestras_1.xlsx')
  
 for j,file in enumerate(ms.os.listdir('data/mediciones_amb')): #estoy diciendo que me recorra cada archivo de esa carpeta
     name = ms.os.path.splitext(file)[0]
-    
+    print(name)
     row = info_muestras[info_muestras['Nombre'] == name]
     muestra_i = ms.Muestra(name, row['Tipo'].iloc[0], row['Anillos'].iloc[0], row['Contactos'].iloc[0], row['Soldaduras'].iloc[0], row['Heater'].iloc[0])
     
@@ -27,14 +27,15 @@ for j,file in enumerate(ms.os.listdir('data/mediciones_amb')): #estoy diciendo q
     
     if len(muestra_i.medicion_amb.R['R_avg'])>0:
         plt.figure()
-        plt.title(muestra_i.nombre)
+        plt.title(f'{muestra_i.nombre} Ambiente')
         plt.xlabel('$R_i$')
         plt.ylabel('R[$k\Omega$]')
         #plt.plot(muestra_i.R['R_avg'])
         for i in range(muestra_i.medicion_amb.R['i'].min(),muestra_i.medicion_amb.R['i'].max()+1):
             df_i = muestra_i.medicion_amb.R[muestra_i.medicion_amb.R['i']==i]
             if len(df_i) >0:
-                plt.errorbar(range(i,len(df_i)+i),df_i['R_avg'],yerr=df_i['R_error'],fmt='-o',label=f'{i}')
+                plt.plot(range(i,len(df_i)+i),df_i['R_avg'],'-o',label=f'{i}')
+                #plt.errorbar(range(i,len(df_i)+i),df_i['R_avg'],yerr=df_i['R_error'],fmt='-o',label=f'{i}')
                 plt.legend()
     
 #%% 
@@ -46,6 +47,7 @@ info_muestras = ms.pd.read_excel('data/info_muestras_1.xlsx')
 
 for j,file in enumerate(ms.os.listdir('data/mediciones_nit')): #estoy diciendo que me recorra cada archivo de esa carpeta
     name = ms.os.path.splitext(file)[0]
+    print(name)
     
     row = info_muestras[info_muestras['Nombre'] == name]
     muestra_i = ms.Muestra(name, row['Tipo'].iloc[0], row['Anillos'].iloc[0], row['Contactos'].iloc[0], row['Soldaduras'].iloc[0], row['Heater'].iloc[0])
@@ -54,13 +56,21 @@ for j,file in enumerate(ms.os.listdir('data/mediciones_nit')): #estoy diciendo q
     
     if len(muestra_i.medicion_nit.R['R_avg'])>0:
         plt.figure()
-        plt.title(muestra_i.nombre)
+        plt.title(f'{muestra_i.nombre} Nitrogeno')
         plt.xlabel('$R_i$')
         plt.ylabel('R[$k\Omega$]')
         #plt.plot(muestra_i.R['R_avg'])
-        for i in range(muestra_i.medicion_nit.R['i'].min(),muestra_i.medicion_nit.R['i'].max()+1):
-            df_i = muestra_i.medicion_nit.R[muestra_i.medicion_nit.R['i']==i]
-            if len(df_i) >0:
-                plt.errorbar(range(i,len(df_i)+i),df_i['R_avg'],yerr=df_i['R_error'],fmt='-o',label=f'{i}')
-                plt.legend()
+        #solo vale en cuadradas: 
+        if muestra_i.tipo != 'Circular':
+            for i in range(muestra_i.medicion_nit.R['i'].min(),muestra_i.medicion_nit.R['i'].max()+1):
+                df_i = muestra_i.medicion_nit.R[muestra_i.medicion_nit.R['i']==i]
+                if len(df_i) >0:
+            
+                    plt.plot(range(i,len(df_i)+i),df_i['R_avg'],'-o',label=f'{i}')
+                    #plt.errorbar(range(i,len(df_i)+i),df_i['R_avg'],yerr=df_i['R_error'],fmt='-o',label=f'{i}')
+                    plt.legend()
+                
+        """
+        #df = muestra_i.medicion_nit.R
+        """
         plt.show()

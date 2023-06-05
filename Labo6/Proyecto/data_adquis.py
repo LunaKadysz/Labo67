@@ -64,8 +64,8 @@ df = pd.DataFrame({'i': [], 'j': [], 'R_avg':[], 'R_min':[], 'R_max':[]})
 #sin trigger porque no me funciona
 #20 mediciones es aprox 10s
 
-i = 9
-j = 10
+i = 6
+j = 8
 
 R = []
 a = time.time()
@@ -79,5 +79,5 @@ df = df.append({'i': i, 'j': j,'R_avg':np.mean(R),'R_min':min(R),'R_max':max(R)}
 
 
 #%%
-df.to_csv('data/mediciones_nit/NPL.csv', index=False)
+df.to_csv('data/mediciones_nit/03-5PTB.csv', index=False)
 

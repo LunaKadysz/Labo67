@@ -41,6 +41,7 @@ class Muestra:
         
         #cargo el archivo donde tengo los valores de resistencia
         path = f'data/mediciones_amb/{self.nombre}.csv'
+        #drop(0) para que no tome los nombres de las columnas originales
         muestra = pd.read_csv(path, names=['i','j','R_min','R_max','R_avg'], header=None).drop(0).dropna().reset_index()
         
         #aca emprolijo la notacion de indices: (i -> i, j) -> j como enteros
@@ -55,7 +56,7 @@ class Muestra:
         rango = list(df_rango[df_rango['nombre'] == self.nombre]['rango'])[0]
         
         #atributo de resistencia
-        muestra['R_error'] = [self.get_error_multimetro(df_error_multimetro, muestra, i, R, rango) for i,R in enumerate(muestra['R_avg'])] 
+        #muestra['R_error'] = [self.get_error_multimetro(df_error_multimetro, muestra, i, R, rango) for i,R in enumerate(muestra['R_avg'])] 
         self.medicion_amb.R = muestra
 
 
@@ -72,16 +73,18 @@ class Muestra:
             #cargo el archivo donde tengo los valores de resistencia
             path = f'data/mediciones_nit/{self.nombre}.csv'
             #muestra = pd.read_csv(path, names=['i','j','R_avg','R_min','R_max'], header=None).drop(0).dropna().reset_index()
-            muestra = pd.read_csv(path).drop(0).dropna().reset_index()
+            #muestra = pd.read_csv(path).drop(0).dropna().reset_index()
+            muestra = pd.read_csv(path).dropna().reset_index()
             
             muestra[['R_avg','R_min','R_max']] = muestra[['R_avg','R_min','R_max']]/1000
             
             #limpio los ovld
             muestra = muestra[muestra['R_avg']<1000].dropna().reset_index()
 
-            #aca emprolijo la notacion de indices: (i -> i, j) -> j como enteros
-            muestra['i'] = [int(ind) for ind in muestra['i']]
-            muestra['j'] = [int(ind) for ind in muestra['j']]
+            #aca emprolijo la notacion de indices: (i -> i, j) -> j como enteros (para las circulares)
+            if self.tipo != 'Circular':
+                muestra['i'] = [int(ind) for ind in muestra['i']]
+                muestra['j'] = [int(ind) for ind in muestra['j']]
             
             #cargo el archivo donde tengo la tabla de errores del multimetro
             df_error_multimetro = pd.read_csv('data/error_multimetro_R.csv')
@@ -91,7 +94,7 @@ class Muestra:
             rango = list(df_rango[df_rango['nombre'] == self.nombre]['rango'])[0]
             
             #atributo de resistencia
-            muestra['R_error'] = [self.get_error_multimetro(df_error_multimetro, muestra, i, R, rango) for i,R in enumerate(muestra['R_avg'])] 
+            #muestra['R_error'] = [self.get_error_multimetro(df_error_multimetro, muestra, i, R, rango) for i,R in enumerate(muestra['R_avg'])] 
             self.medicion_nit.R = muestra
 
 
