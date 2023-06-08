@@ -34,9 +34,10 @@ for j,file in enumerate(ms.os.listdir('data/mediciones_amb')): #estoy diciendo q
         for i in range(muestra_i.medicion_amb.R['i'].min(),muestra_i.medicion_amb.R['i'].max()+1):
             df_i = muestra_i.medicion_amb.R[muestra_i.medicion_amb.R['i']==i]
             if len(df_i) >0:
-                plt.plot(range(i,len(df_i)+i),df_i['R_avg'],'-o',label=f'{i}')
+                plt.plot(df_i['j'],df_i['R_avg'],'-o',label=f'{i}')
                 #plt.errorbar(range(i,len(df_i)+i),df_i['R_avg'],yerr=df_i['R_error'],fmt='-o',label=f'{i}')
                 plt.legend()
+        plt.savefig(f'figs/{muestra_i.nombre}_amb.png')
     
 #%% 
 
@@ -66,9 +67,10 @@ for j,file in enumerate(ms.os.listdir('data/mediciones_nit')): #estoy diciendo q
                 df_i = muestra_i.medicion_nit.R[muestra_i.medicion_nit.R['i']==i]
                 if len(df_i) >0:
             
-                    plt.plot(range(i,len(df_i)+i),df_i['R_avg'],'-o',label=f'{i}')
+                    plt.plot(df_i['j'],df_i['R_avg'],'-o',label=f'{i}')
                     #plt.errorbar(range(i,len(df_i)+i),df_i['R_avg'],yerr=df_i['R_error'],fmt='-o',label=f'{i}')
                     plt.legend()
+        plt.savefig(f'figs/{muestra_i.nombre}_nit.png')
                 
         """
         #df = muestra_i.medicion_nit.R
