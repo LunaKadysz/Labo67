@@ -9,8 +9,8 @@ Created on Wed Jun  7 11:43:04 2023
 import Muestras2 as ms
 import matplotlib.pyplot as plt
 
-path_abs = r'C:\Users\Luna\Documents\UBA\Labo6-7\Labo67\Labo6\Proyecto'
-#path_abs = r'C:\Users\Usuario\Documents\luna_kadysz\Labo67\Labo6\Proyecto'
+#path_abs = r'C:\Users\Luna\Documents\UBA\Labo6-7\Labo67\Labo6\Proyecto'
+path_abs = r'C:\Users\Usuario\Documents\luna_kadysz\Labo67\Labo6\Proyecto'
 ms.os.chdir(path_abs)
 #os.getcwd()
 #%%
@@ -43,7 +43,7 @@ for j,file in enumerate(ms.os.listdir('data/mediciones_amb')): #estoy diciendo q
             #df_j = muestra.medicion_nit.R[muestra.medicion_nit.R['j']==i]
             df_i.loc[idx,['i','j']] = df_i.loc[idx,['j','i']].values
             if len(df_i) >0:
-                p, = plt.plot(df_i['j'],df_i['R_avg'],'-o',label=f'R_i,{i}')
+                p, = plt.plot(df_i['j'],df_i['R_avg'],'-o',label=f'R_i,{i}',linewidth= 2, markersize=4)
                 #plt.errorbar(range(i,len(df_i)+i),df_i['R_avg'],yerr=df_i['R_error'],fmt='-o',label=f'{i}')
                 plot_lines2.append(p)
                 
@@ -59,7 +59,7 @@ for j,file in enumerate(ms.os.listdir('data/mediciones_amb')): #estoy diciendo q
 # Create another legend for the second line.
         plt.legend(handles=plot_lines1, loc=2,fontsize = 15)
 
-        plt.savefig(f'figs/intento2/{muestra_i.nombre}_amb.png')
+        #plt.savefig(f'figs/intento2/{muestra_i.nombre}_amb.png', bbox_inches="tight", pad_inches = 0)
     
 #%% 
 
@@ -91,7 +91,7 @@ for j,file in enumerate(ms.os.listdir('data/mediciones_nit')): #estoy diciendo q
             #plt.plot(muestra_i.R['R_avg'])
             #solo vale en cuadradas: 
         
-            rango = range(muestra_i.medicion_nit.R['i'].min(),muestra_i.medicion_nit.R['i'].max()+1)
+            rango = range(muestra_i.medicion_nit.R['i'].min(),muestra_i.medicion_nit.R['j'].max()+1)
             for i in rango:
                 df_i = muestra_i.medicion_nit.R[(muestra_i.medicion_nit.R['i']==i) | (muestra_i.medicion_nit.R['j']==i)].copy()
         
@@ -100,7 +100,7 @@ for j,file in enumerate(ms.os.listdir('data/mediciones_nit')): #estoy diciendo q
                 #df_j = muestra.medicion_nit.R[muestra.medicion_nit.R['j']==i]
                 df_i.loc[idx,['i','j']] = df_i.loc[idx,['j','i']].values
                 if len(df_i) >0:
-                    p, = plt.plot(df_i['j'],df_i['R_avg'],'-o',label=f'R_i,{i}')
+                    p, = plt.plot(df_i['j'],df_i['R_avg'],'-o',label=f'R_i,{i}',linewidth= 2, markersize=4)
                     #plt.errorbar(range(i,len(df_i)+i),df_i['R_avg'],yerr=df_i['R_error'],fmt='-o',label=f'{i}')
                     plot_lines2.append(p)
                     
@@ -116,4 +116,4 @@ for j,file in enumerate(ms.os.listdir('data/mediciones_nit')): #estoy diciendo q
     # Create another legend for the second line.
             plt.legend(handles=plot_lines1, loc=2,fontsize = 15)
     
-            plt.savefig(f'figs/intento2/{muestra_i.nombre}_nit.png')
+            #plt.savefig(f'figs/intento2/{muestra_i.nombre}_nit.png')
