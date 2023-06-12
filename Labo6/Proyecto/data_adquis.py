@@ -58,26 +58,28 @@ ins.write('CALC:FUNC AVER')
 
 #%%
 import pandas as pd
-df = pd.DataFrame({'i': [], 'j': [], 'R_avg':[], 'R_min':[], 'R_max':[]})
+df = pd.DataFrame({'i': [],'j': [], 'R_min':[], 'R_max':[], 'R_avg':[]})
 
 #%% 
 #sin trigger porque no me funciona
 #20 mediciones es aprox 10s
 
-i = 6
-j = 8
+i = 1
+j = 3
 
-R = []
+#R = f'({i},{j})'
+
+Rs = []
 a = time.time()
 for n in range(20):
     r = ins.query_ascii_values('MEASURE:FRES?')[0]
-    R.append(r)
+    Rs.append(r)
 b= time.time()
 print(f'tiempo: {b-a}')
 
-df = df.append({'i': i, 'j': j,'R_avg':np.mean(R),'R_min':min(R),'R_max':max(R)},ignore_index=True)
+df = df.append({'i': i, 'j': j,'R_avg':np.mean(Rs),'R_min':min(Rs),'R_max':max(Rs)},ignore_index=True)
 
 
 #%%
-df.to_csv('data/mediciones_nit/03-5PTB.csv', index=False)
+df.to_csv('data/caja_cuantica.csv', index=False)
 

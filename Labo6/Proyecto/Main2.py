@@ -19,11 +19,13 @@ info_muestras = ms.pd.read_excel('data/info_muestras_1.xlsx')
  
 for j,file in enumerate(ms.os.listdir('data/mediciones_amb')): #estoy diciendo que me recorra cada archivo de esa carpeta
     name = ms.os.path.splitext(file)[0]
-    print(name)
+    
     row = info_muestras[info_muestras['Nombre'] == name]
     muestra_i = ms.Muestra(name, row['Tipo'].iloc[0], row['Anillos'].iloc[0], row['Contactos'].iloc[0], row['Soldaduras'].iloc[0], row['Heater'].iloc[0])
     
     muestra_i.set_resistencias_mediciones_amb()
+    
+    print(name, len(muestra_i.medicion_amb.R['R_avg']))
     
     if len(muestra_i.medicion_amb.R['R_avg'])>0:
         plt.figure(figsize=(18,13))
