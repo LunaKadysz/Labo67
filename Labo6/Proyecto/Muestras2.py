@@ -10,8 +10,8 @@ import pandas as pd
 import numpy as np
 import os
 
-#path_abs = r'C:\Users\Luna\Documents\UBA\Labo6-7\Labo67\Labo6\Proyecto'
-path_abs = r'C:\Users\Usuario\Documents\luna_kadysz\Labo67\Labo6\Proyecto'
+path_abs = r'C:\Users\Luna\Documents\UBA\Labo6-7\Labo67\Labo6\Proyecto'
+#path_abs = r'C:\Users\Usuario\Documents\luna_kadysz\Labo67\Labo6\Proyecto'
 os.chdir(path_abs)
 #os.getcwd()
 #%%
@@ -37,54 +37,17 @@ class Muestra:
         las resistencias medidas a temperatura ambiente
 
         """
-        self.medicion_amb = type("medicion", (),{})()
-        
-        #cargo el archivo donde tengo los valores de resistencia
-        path = f'data/mediciones_amb/{self.nombre}.csv'
-        #drop(0) para que no tome los nombres de las columnas originales
-        muestra = pd.read_csv(path, names=['i','j','R_min','R_max','R_avg'], header=None).drop(0).dropna().reset_index()
-        
-        #aca emprolijo la notacion de indices: (i -> i, j) -> j como enteros
-        muestra['i'] = [int(ind.split('(')[1]) for ind in muestra['i']]
-        muestra['j'] = [int(ind.split(')')[0]) for ind in muestra['j']]
-        
-        #cargo el archivo donde tengo la tabla de errores del multimetro
-        df_error_multimetro = pd.read_csv('data/error_multimetro_R.csv')
-        
-        #cargo el archivo donde tengo las unidades de resistencia de cada muestra (ej: rango=ko,Mo,etc)
-        df_rango = pd.read_csv('data/rango.csv')
-        rango = list(df_rango[df_rango['nombre'] == self.nombre]['rango'])[0]
-        
-        #atributo de resistencia
-        #muestra['R_error'] = [self.get_error_multimetro(df_error_multimetro, muestra, i, R, rango) for i,R in enumerate(muestra['R_avg'])] 
-        self.medicion_amb.R = muestra
-
-
-
-
-    def set_resistencias_mediciones_nit(self):
-            """
-            Esta funcion le carga a cada instancia de muestra
-            las resistencias medidas a temperatura ambiente
-    
-            """
-            self.medicion_nit = type("medicion", (),{})()
+        if self.tipo != 'Circular':
+            self.medicion_amb = type("medicion", (),{})()
             
             #cargo el archivo donde tengo los valores de resistencia
-            path = f'data/mediciones_nit/{self.nombre}.csv'
-            #muestra = pd.read_csv(path, names=['i','j','R_avg','R_min','R_max'], header=None).drop(0).dropna().reset_index()
-            #muestra = pd.read_csv(path).drop(0).dropna().reset_index()
-            muestra = pd.read_csv(path).dropna().reset_index()
+            path = f'data/mediciones_amb/{self.nombre}.csv'
+            #drop(0) para que no tome los nombres de las columnas originales
+            muestra = pd.read_csv(path, names=['i','j','R_min','R_max','R_avg'], header=None).drop(0).dropna().reset_index()
             
-            muestra[['R_avg','R_min','R_max']] = muestra[['R_avg','R_min','R_max']]/1000
-            
-            #limpio los ovld
-            muestra = muestra[muestra['R_avg']<1000].dropna().reset_index()
-
-            #aca emprolijo la notacion de indices: (i -> i, j) -> j como enteros (para las circulares)
-            if self.tipo != 'Circular':
-                muestra['i'] = [int(ind) for ind in muestra['i']]
-                muestra['j'] = [int(ind) for ind in muestra['j']]
+            #aca emprolijo la notacion de indices: (i -> i, j) -> j como enteros
+            muestra['i'] = [int(ind.split('(')[1]) for ind in muestra['i']]
+            muestra['j'] = [int(ind.split(')')[0]) for ind in muestra['j']]
             
             #cargo el archivo donde tengo la tabla de errores del multimetro
             df_error_multimetro = pd.read_csv('data/error_multimetro_R.csv')
@@ -95,8 +58,123 @@ class Muestra:
             
             #atributo de resistencia
             #muestra['R_error'] = [self.get_error_multimetro(df_error_multimetro, muestra, i, R, rango) for i,R in enumerate(muestra['R_avg'])] 
-            self.medicion_nit.R = muestra
+            self.medicion_amb.R = muestra
 
+
+
+
+    def set_resistencias_mediciones_nit(self):
+            """
+            Esta funcion le carga a cada instancia de muestra
+            las resistencias medidas a temperatura ambiente
+    
+            """
+            if self.tipo != 'Circular':
+                self.medicion_nit = type("medicion", (),{})()
+                
+                #cargo el archivo donde tengo los valores de resistencia
+                path = f'data/mediciones_nit/{self.nombre}.csv'
+                #muestra = pd.read_csv(path, names=['i','j','R_avg','R_min','R_max'], header=None).drop(0).dropna().reset_index()
+                #muestra = pd.read_csv(path).drop(0).dropna().reset_index()
+                muestra = pd.read_csv(path).dropna().reset_index()
+                
+                muestra[['R_avg','R_min','R_max']] = muestra[['R_avg','R_min','R_max']]/1000
+                
+                #limpio los ovld
+                muestra = muestra[muestra['R_avg']<1000].dropna().reset_index()
+    
+                #aca emprolijo la notacion de indices: (i -> i, j) -> j como enteros (para las circulares)
+                
+                muestra['i'] = [int(ind) for ind in muestra['i']]
+                muestra['j'] = [int(ind) for ind in muestra['j']]
+                
+                #cargo el archivo donde tengo la tabla de errores del multimetro
+                df_error_multimetro = pd.read_csv('data/error_multimetro_R.csv')
+                
+                #cargo el archivo donde tengo las unidades de resistencia de cada muestra (ej: rango=ko,Mo,etc)
+                df_rango = pd.read_csv('data/rango.csv')
+                rango = list(df_rango[df_rango['nombre'] == self.nombre]['rango'])[0]
+                
+                #atributo de resistencia
+                #muestra['R_error'] = [self.get_error_multimetro(df_error_multimetro, muestra, i, R, rango) for i,R in enumerate(muestra['R_avg'])] 
+                self.medicion_nit.R = muestra
+                
+    
+    def set_resistencias_mediciones_amb_corbino(self):
+            """
+            Esta funcion le carga a cada instancia de muestra
+            las resistencias medidas a temperatura ambiente
+    
+            """
+            if self.tipo == 'Circular':
+                self.medicion_amb = type("medicion", (),{})()
+                
+                #cargo el archivo donde tengo los valores de resistencia
+                path = f'data/mediciones_amb/{self.nombre}.csv'
+                #muestra = pd.read_csv(path, names=['i','j','R_avg','R_min','R_max'], header=None).drop(0).dropna().reset_index()
+                #muestra = pd.read_csv(path).drop(0).dropna().reset_index()
+                muestra = pd.read_csv(path)
+                
+                #paso de ohms a kohms
+                #muestra[['R_avg','R_min','R_max']] = muestra[['R_avg','R_min','R_max']]/1000
+                
+                #limpio los ovld
+                muestra = muestra[muestra['R_avg']<1000].dropna().reset_index()
+    
+                #aca emprolijo la notacion de indices: (i -> i, j) -> j como enteros (para las circulares)
+                
+                #muestra['i'] = [int(ind) for ind in muestra['i']]
+                #muestra['j'] = [int(ind) for ind in muestra['j']]
+                
+                #cargo el archivo donde tengo la tabla de errores del multimetro
+                df_error_multimetro = pd.read_csv('data/error_multimetro_R.csv')
+                
+                #cargo el archivo donde tengo las unidades de resistencia de cada muestra (ej: rango=ko,Mo,etc)
+                df_rango = pd.read_csv('data/rango.csv')
+                rango = list(df_rango[df_rango['nombre'] == self.nombre]['rango'])[0]
+                
+                #atributo de resistencia
+                #muestra['R_error'] = [self.get_error_multimetro(df_error_multimetro, muestra, i, R, rango) for i,R in enumerate(muestra['R_avg'])] 
+                self.medicion_amb.R = muestra
+
+
+
+    def set_resistencias_mediciones_nit_corbino(self):
+            """
+            Esta funcion le carga a cada instancia de muestra
+            las resistencias medidas a temperatura ambiente
+    
+            """
+            if self.tipo == 'Circular':
+                self.medicion_nit = type("medicion", (),{})()
+                
+                #cargo el archivo donde tengo los valores de resistencia
+                path = f'data/mediciones_nit/{self.nombre}.csv'
+                #muestra = pd.read_csv(path, names=['i','j','R_avg','R_min','R_max'], header=None).drop(0).dropna().reset_index()
+                #muestra = pd.read_csv(path).drop(0).dropna().reset_index()
+                muestra = pd.read_csv(path)
+                
+                #paso de ohms a kohms
+                #muestra[['R_avg','R_min','R_max']] = muestra[['R_avg','R_min','R_max']]/1000
+                
+                #limpio los ovld
+                muestra = muestra[muestra['R_avg']<1000].dropna().reset_index()
+    
+                #aca emprolijo la notacion de indices: (i -> i, j) -> j como enteros (para las circulares)
+                
+                #muestra['i'] = [int(ind) for ind in muestra['i']]
+                #muestra['j'] = [int(ind) for ind in muestra['j']]
+                
+                #cargo el archivo donde tengo la tabla de errores del multimetro
+                df_error_multimetro = pd.read_csv('data/error_multimetro_R.csv')
+                
+                #cargo el archivo donde tengo las unidades de resistencia de cada muestra (ej: rango=ko,Mo,etc)
+                df_rango = pd.read_csv('data/rango.csv')
+                rango = list(df_rango[df_rango['nombre'] == self.nombre]['rango'])[0]
+                
+                #atributo de resistencia
+                #muestra['R_error'] = [self.get_error_multimetro(df_error_multimetro, muestra, i, R, rango) for i,R in enumerate(muestra['R_avg'])] 
+                self.medicion_nit.R = muestra
 
 
 
