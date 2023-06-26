@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Jun 26 11:38:21 2023
+
+@author: DMC
+"""
+
 # Execute this script using --> exec(open('SR830.py').read())
 
 print("\n"*100) # Just clear the screen.
@@ -53,6 +60,7 @@ if RMS_VOLTAGE > 5 or RMS_VOLTAGE < 0.004:
 	print("ERROR: Invalid excitation voltage. The allowed range is between 0.004 and 5 volts.")
 	exit()
 
+
 SR830.write("OUTX1") # Set the SR830 output response to GPIB port instead of RS232.
 SR830.write("*RST") # Initialize the lock-in.
 # Reference and phase config -----------------
@@ -63,11 +71,11 @@ SR830.write("ISRC 0") # Set (Query) the Input Configuration to A (0), A-B (1) , 
 SR830.write("IGND 0") # Set (Query) the Input Shield Grounding to Float (0) or Ground (1).
 SR830.write("ICPL 1") # Set (Query) the Input Coupling to AC (0) or DC (1).
 # Gain and time constant ---------------------
-SR830.write("SENS 26") # Set (Query) the Sensitivity to 2 nV (0) through 1 V (26) rms full scale.
+SR830.write("SENS 23") # Set (Query) the Sensitivity to 2 nV (0) through 1 V (26) rms full scale.
 SR830.write("RMOD 1") # Set (Query) the Dynamic Reserve Mode to HighReserve (0), Normal (1), or Low Noise (2).
-SR830.write("OFLT 9") # Set (Query) the Time Constant to 10 μs (0) through 30 ks (19).
+SR830.write("OFLT 12") # Set (Query) the Time Constant to 10 μs (0) through 30 ks (19).
 SR830.write("OFSL 1") # Set (Query) the Low Pass Filter Slope to 6 (0), 12 (1), 18 (2) or 24 (3) dB/oct.
-SR830.write("SYNC 0") # Set (Query) the Synchronous Filter to Off (0) or On below 200 Hz (1).
+SR830.write("SYNC 1") # Set (Query) the Synchronous Filter to Off (0) or On below 200 Hz (1).
 # Display and output -------------------------
 #SR830.write("DDEF 1, 1, 0") # Set (Query) the CH1 or CH2 (i=1,2) display to XY, Rθ, XnYn, Aux 1,3 or Aux 2,4 (j=0..4) and ratio the display to None, Aux1,3 or Aux 2,4 (k=0,1,2).
 #SR830.write("DDEF 2, 1, 0") # Set (Query) the CH1 or CH2 (i=1,2) display to XY, Rθ, XnYn, Aux 1,3 or Aux 2,4 (j=0..4) and ratio the display to None, Aux1,3 or Aux 2,4 (k=0,1,2).
@@ -77,8 +85,8 @@ SR830.write("FPOP 1, 0") # Set (Query) the CH1 (i=1) or CH2 (i=2) Output Source 
 SR830.write("FPOP 2, 0") # Set (Query) the CH1 (i=1) or CH2 (i=2) Output Source to X or Y (j=1) or Display (j=0).
 
 SR830.write("FREQ" + str(START_FREQUENCY)) # Set the frequency.
-SR830.write("AGAN") # Auto Gain function. Same as pressing the [AUTO GAIN] key.
-input("The instrument should be performing an automatic sensivity adjustment, and should make a noise signal when it is done. Press enter when it has finished...") # This is to ensure that the previous command has finished.
+#SR830.write("AGAN") # Auto Gain function. Same as pressing the [AUTO GAIN] key.
+#input("The instrument should be performing an automatic sensivity adjustment, and should make a noise signal when it is done. Press enter when it has finished...") # This is to ensure that the previous command has finished.
 
 print("Measuring, please wait...")
 frequency = np.array([]) # Create an empty array.
@@ -91,7 +99,7 @@ for k in range(1, N_POINTS + 1):
 	frequency = np.append(frequency, 10**( (k-1)*(math.log10(END_FREQUENCY) - math.log10(START_FREQUENCY))/(N_POINTS-1) + math.log10(START_FREQUENCY) ) ) # Logarithmically spaced frequencies.
 	SR830.write("FREQ" + str(frequency[-1])) # Set the frequency just calculated.
 	SR830.write("OFLT " + str(time_constant_number(TIME_FACTOR/frequency[-1]))) # Set (Query) the Time Constant to 10 μs (0) through 30 ks (19).
-	SR830.write("AGAN")# Auto Gain function. Same as pressing the [AUTO GAIN] key.
+	#SR830.write("AGAN")# Auto Gain function. Same as pressing the [AUTO GAIN] key.
 	sleep(TIME_FACTOR/frequency[-1]*STABILIZATION_TIME_FACTOR + 5)
 	SR830.query("OUTP? 1") # If I don't query at least four times, it may return crap from some buffer (which I don't know how to clear).
 	SR830.query("OUTP? 1") # If I don't query at least four times, it may return crap from some buffer (which I don't know how to clear).
@@ -156,7 +164,7 @@ rm.close()
 print("Measurment finished. Close the plot window to continue.")
 
 file_name = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-plt.savefig('data/'+file_name+'.pdf', bbox_inches='tight')
+plt.savefig('data/'+file_name+'_int.pdf', bbox_inches='tight')
 header_str = 'frequency (Hz)	Voltage_X (V) 	Voltage_Y (V)'
 np.savetxt('data/'+file_name+'.txt', np.transpose([frequency, voltage_X, voltage_Y]), fmt='%1.7e', delimiter='\t', header=header_str, newline='\n', comments='# ')
 
@@ -169,6 +177,8 @@ print("Thanks for using the program, hope to see you back soon, bye!\n\n\n\n")
 
 
   
+
+
 
 
 
