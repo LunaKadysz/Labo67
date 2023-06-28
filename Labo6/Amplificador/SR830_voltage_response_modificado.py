@@ -63,6 +63,7 @@ if RMS_VOLTAGE > 5 or RMS_VOLTAGE < 0.004:
 
 SR830.write("OUTX1") # Set the SR830 output response to GPIB port instead of RS232.
 SR830.write("*RST") # Initialize the lock-in.
+SR830.write(f'HARM ')
 # Reference and phase config -----------------
 SR830.write("FMOD 1") # Set (Query) the Reference Source to External (0) or Internal (1).
 SR830.write("SLVL " + str(RMS_VOLTAGE)) # Set (Query) the Sine Output Amplitude to x Vrms. 0.004 ≤ x ≤ 5.000.
@@ -166,12 +167,12 @@ print("Measurment finished. Close the plot window to continue.")
 file_name = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
 plt.savefig('data/'+file_name+'_int.pdf', bbox_inches='tight')
 header_str = 'frequency (Hz)	Voltage_X (V) 	Voltage_Y (V)'
-np.savetxt('data/'+file_name+'.txt', np.transpose([frequency, voltage_X, voltage_Y]), fmt='%1.7e', delimiter='\t', header=header_str, newline='\n', comments='# ')
+np.savetxt('data/harm#2/'+file_name+'.txt', np.transpose([frequency, voltage_X, voltage_Y]), fmt='%1.7e', delimiter='\t', header=header_str, newline='\n', comments='# ')
 
 plt.show()
 
 print("The plot and the CSV data have been saved to files " + file_name + ".pdf and " + file_name + ".txt respectively.")
-print("Thanks for using the program, hope to see you back soon, bye!\n\n\n\n")
+
 
 
 
