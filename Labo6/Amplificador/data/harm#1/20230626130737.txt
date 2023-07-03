@@ -1,4 +1,4 @@
-# frequency (Hz)	Voltage_X (V) 	Voltage_Y (V)
+# frequency (Hz)	Voltage_X (V)	Voltage_Y (V)
 1.1300000e+01	1.0258500e-01	0.0000000e+00
 1.4762652e+01	1.0258200e-01	-1.9073600e-05
 1.9286361e+01	1.0258500e-01	-1.9073600e-05

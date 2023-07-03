@@ -50,8 +50,9 @@ START_FREQUENCY = float(input("Start frequency (Hz)? "))
 END_FREQUENCY = float(input("Final frequency (Hz)? "))
 N_POINTS = int(input("Number of points? "))
 RMS_VOLTAGE = float(input("Excitation voltage (Vrms)? ")) # Excitation voltage.
+HARM_N = float(input("Harmonic number? ")) # Excitation voltage.
 TIME_FACTOR = 300 # Determines the "time constant" of the lock-in according to "time constant = TIME_FACTOR*frequency". A value of 300 should be enough. Higher values will result in more stable measurments but longer times.
-STABILIZATION_TIME_FACTOR = 8 # Determines the delay between the moment in which the frequency is changed and the moment in which the measurment is taken according to "delay = STABILIZATION_TIME_FACTOR*time constant". A value of 8 should be enough. Greater values will result un more realistic values but will take more time.
+STABILIZATION_TIME_FACTOR = 4 # Determines the delay between the moment in which the frequency is changed and the moment in which the measurment is taken according to "delay = STABILIZATION_TIME_FACTOR*time constant". A value of 8 should be enough. Greater values will result un more realistic values but will take more time.
 # ----------------------------------------------------------
 
 #%%
@@ -62,8 +63,8 @@ if RMS_VOLTAGE > 5 or RMS_VOLTAGE < 0.004:
 
 
 SR830.write("OUTX1") # Set the SR830 output response to GPIB port instead of RS232.
-SR830.write("*RST") # Initialize the lock-in.
-SR830.write(f'HARM ')
+#SR830.write("*RST") # Initialize the lock-in.
+SR830.write(f'HARM {HARM_N}')
 # Reference and phase config -----------------
 SR830.write("FMOD 1") # Set (Query) the Reference Source to External (0) or Internal (1).
 SR830.write("SLVL " + str(RMS_VOLTAGE)) # Set (Query) the Sine Output Amplitude to x Vrms. 0.004 ≤ x ≤ 5.000.
@@ -166,8 +167,8 @@ print("Measurment finished. Close the plot window to continue.")
 
 file_name = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
 plt.savefig('data/'+file_name+'_int.pdf', bbox_inches='tight')
-header_str = 'frequency (Hz)	Voltage_X (V) 	Voltage_Y (V)'
-np.savetxt('data/harm#2/'+file_name+'.txt', np.transpose([frequency, voltage_X, voltage_Y]), fmt='%1.7e', delimiter='\t', header=header_str, newline='\n', comments='# ')
+header_str = 'frequency (Hz)	Voltage_X (V)	Voltage_Y (V)'
+np.savetxt('data/harm#1/'+file_name+'.txt', np.transpose([frequency, voltage_X, voltage_Y]), fmt='%1.7e', delimiter='\t', header=header_str, newline='\n', comments='# ')
 
 plt.show()
 
