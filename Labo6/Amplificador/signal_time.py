@@ -147,7 +147,19 @@ def ResetDataBuffers(ins):
 	ins.write('REST')
 #%%
 
-SetDataSampleRate(SR830,7);
+#reset before measuring
+SR830.write('REST')
+
+
+#reference signal
+SR830.write('FMOD 1') #internal reference mode
+SR830.write('FREQ 13.1') # internal reference frequency 
+SR830.write('RSLP 1') # type of signal internal reference: TTL rising edge
+print(SR830.query('RSLP?'))
+
+#sample rate
+sr = 13 # 512Hz
+SetDataSampleRate(SR830,sr);
 print(GetDataSampleRate(SR830));
 
 SetEndOfBuffer(SR830,0);
@@ -157,10 +169,11 @@ print(GetEndOfBuffer(SR830));
 SetTriggerStartMode(SR830,1);
 print(GetTriggerStartMode(SR830));
 
+
 print('Starting to measure')
 
 Start(SR830);
-sleep(1)
+sleep(0.1)
 Pause(SR830);
 
 #SR830.write('REST') #reset
@@ -170,200 +183,17 @@ def GetDataPoints(ins,buffer,n_points):
 	data = ins.query(f'TRCA? {buffer},0,{n_points}')
 	return data
 
-print(f'data: {GetDataPoints(SR830,1,5)}')
-print(SR830.query('SPTS?'))
+
+buffer_points = SR830.query('SPTS?') #number of points stored in the buffer
+
+data = GetDataPoints(SR830,1,buffer_points)
+time = np.linspace(0,len(buffer_points)/512,buffer_points)
+time = np.arange(0,len(buffer_points)/512,1/512)
+
+plt.plot(time,data)
+
+
+
+
+
 #%%
-    def SetTriggerSlope(self, value):
-        """
-        The RSLP command sets the reference trigger when using the
-        external reference mode. The parameter i selects sine zero crossing
-        (i=0), TTL rising edge (i=1), , or TTL falling edge (i=2). At frequencies
-        below 1 Hz, the a TTL reference must be used[1].
-        """
-        if value not in (0,1,2):
-            raise Exception("SetTriggerSlope: parameter value can only be 0(≙sine zero crossing), 1(≙TTL rising edge/Pos edge) or 2(≙TTL falling edge/neg edge)")
-        snd = "RSLP%i" % value 
-        self.SendString(snd)
-
-    def iToSlope(self, i):
-        """
-        converts the response returned by GetTriggerSlope to the actual slope
-        """
-        options = {0 : 'Sine',
-           1 : 'Pos edge',
-           2 : 'neg edge'
-        }
-        return options[int(i.strip())]          
-    
-    def GetTriggerSlope(self):
-        """
-        The RSLP? command queries the reference trigger when using the
-        external reference mode.
-        use the method self.iToSlope to convert the response of this method to the actual slope
-        """
-        resp = self.__GetSomething('RSLP?');
-        return resp
-        
-    def Reset(self):
-        """
-        Reset the unit to its default configurations[1].
-        """
-        self.SendString('*RST')
-        
-    def ResetDataBuffers(self):
-        """
-        The REST command resets the data buffers. The REST command can
-        be sent at any time - any storage in progress, paused or not, will be
-        reset. This command will erase the data buffer[1].
-        """
-        self.SendString('REST')
-       
-    def GetSelectedOutput(self, which):
-        """
-        The OUTP? i command reads the value of X, Y, R or θ. The parameter
-        i selects X (i=1), Y (i=2), R (i=3) or θ (i=4). Values are returned as ASCII
-        floating point numbers with units of Volts or degrees. For example, the
-        response might be "-1.01026". This command is a query only command[1].
-        """
-        if which not in (1,2,3,4):
-            raise Exception("GetSelectedOutput: parameter which can only be 1(≙X),2(≙Y),3(≙R) or 4(≙θ)") 
-        Value = self.__GetSomething('OUTP?' + str(which))
-        if which == 1:
-            Type = 'X'
-        elif which == 2:
-            Type = 'Y'
-        elif which == 3:
-            Type = 'R'
-        elif which == 4:    
-            Type = 'θ'
-            
-        return [float(Value), Type]
-
-    def GetSelectedDisplayValue(self, which):
-        """
-        The OUTR? i command reads the value of the CH1 or CH2 display.
-        The parameter i selects the display (i=1 or 2). Values are returned as
-        ASCII floating point numbers with units of the display. For example, the
-        response might be "-1.01026". This command is a query only command[1].
-        """
-        if which not in (1, 2):
-            raise Exception("GetSelectedDisplayValue: parameter which can only be 1(≙CH1) or 2(≙CH2)")
-        Value =   self.__GetSomething('OUTR?' + str(which)) 
-        time.sleep(0.2);
-        resp = float(Value)
-        if DEBUG:
-            print("GetSelectedDisplayValue: " + Value)
-        return resp
-        
-    def __check_snap(self, param):
-        """
-        internal function used by method SNAP
-        ensures that the SNAP-params are correct
-        """
-        if param not in (1,2,3,4,5,6,7,8,9,10,11):
-            raise Exception("SNAP: Parameters can only be 1(≙X), 2(≙Y), 3(≙R), 4(≙θ), 5(≙Aux In 1), 6(≙Aux In 2), 7(≙Aux In 3), 8(≙Aux In 4), 9(≙Reference Frequency), 10(≙CH1 display) or 11(≙CH2 display)") 
-        
-    def SNAP(self,Param1,Param2,Param3=None,Param4 =None,Param5=None,Param6=None):
-        """
-        The SNAP? command records the values of either 2, 3, 4, 5 or 6 param-
-        eters at a single instant. For example, SNAP? is a way to query values of
-        X and Y (or R and θ) which are taken at the same time. This is important
-        when the time constant is very short. Using the OUTP? or OUTR? com-
-        mands will result in time delays, which may be greater than the time con-
-        stant, between reading X and Y (or R and θ).
-        The SNAP? command requires at least two parameters and at most six
-        parameters. The parameters i, j, k, l, m, n select the parameters below.
-        
-        i,j,k,l,m,n     parameter
-        1               X
-        2               Y
-        3               R
-        4               θ
-        5               Aux In 1
-        6               Aux In 2
-        7               Aux In 3
-        8               Aux In 4
-        9               Reference Frequency
-        10              CH1 display
-        11              CH2 display
-
-        The requested values are returned in a single string with the values sep-
-        arated by commas and in the order in which they were requested. For
-        example, the SNAP?1,2,9,5 will return the values of X, Y, Freq and
-        Aux In 1. These values will be returned in a single string such as
-        "0.951359,0.0253297,1000.00,1.234".
-        The first value is X, the second is Y, the third is f, and the fourth is
-        Aux In 1.
-        The values of X and Y are recorded at a single instant. The values of R
-        and θ are also recorded at a single instant. Thus reading X,Y OR R,θ
-        yields a coherent snapshot of the output signal. If X,Y,R and θ are all
-        read, then the values of X,Y are recorded approximately 10μs apart from
-        R,θ. Thus, the values of X and Y may not yield the exact values of R and
-        θ from a single SNAP? query.
-        The values of the Aux Inputs may have an uncertainty of up to 32μs. The
-        frequency is computed only every other period or 40 ms, whichever is
-        longer.
-        
-        The SNAP? command is a query only command. The SNAP? command
-        is used to record various parameters simultaneously, not to transfer data
-        quickly[1].
-        """
-        self.__check_snap(Param1);      
-        self.__check_snap(Param2); 
-        Cmdstr = 'SNAP?' + ' '+ str(Param1) + ','+ str(Param2);
-        if Param3 != None:
-            self.__check_snap(Param3); 
-            Cmdstr += ','+ str(Param3);
-        if Param4 != None:
-            self.__check_snap(Param4); 
-            Cmdstr += ','+ str(Param4);
-        if Param5 != None:
-            self.__check_snap(Param5); 
-            Cmdstr += ','+ str(Param5);
-        if Param6 != None:
-            self.__check_snap(Param6); 
-            Cmdstr += ','+ str(Param6);
-
-        resp = self.__GetSomething(Cmdstr);
-        
-        if Param3 is None: # no value, just the command string to query
-            Val6 = None; Val5 = None; Val4 = None; Val3 = None 
-            [Val1,Val2] = resp.rsplit(',')
-        elif Param4 is None: 
-            Val6 = None; Val5 =None;  Val4 = None 
-            [Val1,Val2,Val3]= resp.rsplit(',')
-        elif Param5 is None:
-            Val6 = None; Val5 = None; 
-            [Val1,Val2,Val3,Val4]= resp.rsplit(',')
-        elif Param6 is None:
-            Val6 = None 
-            [Val1,Val2,Val3,Val4,Val5]= resp.rsplit(',')
-        else:
-            [Val1,Val2,Val3,Val4,Val5, Val6]= resp.rsplit(',')
-
-        return Val1, Val2, Val3, Val4, Val5, Val6, Param1, Param2, Param3, \
-                Param4, Param5, Param6
-
-    def GetAuxValue(self, number):
-        """
-        The OAUX? command reads the Aux Input values. The parameter i
-        selects an Aux Input (1, 2, 3 or 4) and is required. The Aux Input voltages
-        are returned as ASCII strings with units of Volts. The resolution is
-        1/3 mV. This command is a query only command[1].
-        """
-        if number not in (1,2,3,4):
-            raise Exception("GetAuxValue: parameter number can only be 1(≙Aux Input 1), 2(≙Aux Input 2), 3(≙Aux Input 3) or 4(≙Aux Input 4)") 
-        OutAux = self.__GetSomething('OAUX?' + str(number))
-        return float(OutAux), number
-
-    def GetOccupiedBuffer(self):
-        """
-        The SPTS? command queries the number of points stored in the buffer.
-        Both displays have the same number of points. If the buffer is reset, then
-        0 is returned. Remember, SPTS? returns N where N is the number of
-        points - the points are numbered from 0 (oldest) to N-1 (most recent).
-        The SPTS? command can be sent at any time, even while storage is in
-        progress. This command is a query only command[1].
-        """
-        n = self.__GetSomething('SPTS?')
-        return int(n)
