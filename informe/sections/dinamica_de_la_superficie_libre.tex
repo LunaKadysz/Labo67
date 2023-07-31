@@ -1,0 +1,29 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+Durante Laboratorio 6 tomamos algunas mediciones iniciales exploratorias. El sistema permite variar amplitud, frecuencia y frecuencia de modulación. Modificar estos parámetros de forzado permite determinar en qué regiones del espacio se observan los fenómenos a estudiar. 
+Con el objetivo de comprobar y evaluar los algoritmos y procesos de medición desarrollados, pudimos tomar datos que se muestran a continuación. El rango elegido para explorar fue aquel en que se observaran ondas de Faraday sin desborde. 
+
+En la figura \ref{fig:st_alta_baja} se pueden observar los diagramas espacio-temporal para mediciones en regímenes de baja y alta aceleración. Esto corresponde a excitaciones de $(6.0 \pm 0.3) \si{Vpp}$ y $(17.5\pm0.9)\si{Vpp}$. Ambos diagramas se construyeron con mediciones de $12$ segundos a $250$ frames, lo que equivale a $3072$ lineas en la dirección vertical. La frecuencia del sistema utilizada fue de $f = 20$Hz en ambos casos.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[$V = (6.0 \pm 0.3) \si{Vpp}$]{{\includegraphics[width=0.4\linewidth]{figs/st_MED5.pdf} }}%
+    \subfloat[$V = (17.5\pm0.9)\si{Vpp}$]{{\includegraphics[width=0.4\linewidth]{figs/st_MED11.pdf} }}%
+    \caption{Diagramas espacio temporales para dos mediciones de $12\si{s}$ correspondientes a distintas excitaciones verticales. Para cada uno se muestra un detalle del fenómeno con $\cross5$ de aumento. }%
+    \label{fig:st_alta_baja}
+\end{figure}
+
+Para baja aceleración observamos una respuesta subarmónica del sistema que oscila a $\omega = \omega_0/2$ (con $\omega_0$ la frecuencia del forzado). Este es el comportamiento esperado para el régimen de Ondas de Faraday. Para alta aceleración, por encima de este fenómeno, surgen estructuras locales que se propagan a lo largo del anillo y oscilan en amplitud. Estas estructuras son denominadas oscilones y son uno de los focos de este trabajo; a lo largo de Laboratorio 7 se pretende estudiar ciertas propiedades de estos oscilones, tales como su velocidad de propagación y longitud de onda característica.
+
+Otro de los objetivos es estudiar qué le ocurre al sistema al introducir una modulación de fase. En la figura \ref{fig:st_modulacion} puede observarse un diagrama espacio-temporal para una modulación de fase de $f=0.2 \si{Hz}$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{figs/st_MED12.pdf}
+    \caption{Diagrama espacio temporal para una medición con modulación de fase con frecuencia de modulación de $f=0.2\si{Hz}$ a $V = (15.0\pm0.8) \si{Vpp}$. }
+    \label{fig:st_modulacion}
+\end{figure}
+
+Al introducir una fase dependiente del tiempo en el forzado el sistema deja de tener una única frecuencia característica y pasa a tener un espectro más amplio. Se tiene como objetivo estudiar las resonancias de estas frecuencias y la distribución de los modos normales de oscilación. En la siguiente sección se detallan las perspectivas del trabajo.
+\end{document}

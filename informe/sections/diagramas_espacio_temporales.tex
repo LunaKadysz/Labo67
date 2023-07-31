@@ -1,0 +1,17 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+Una vez obtenida la altura de la superficie libre para el anillo mediante el método de FTP para cada fotograma podemos estudiar su dinámica. Para lo mismo se realiza una transformación de coordenadas cartesianas a polares para obtener una banda de alturas con la coordenada radial en el eje de ordenadas y la angular en las abscisas. Al considerar que el fenómeno es unidimensional, se toma que las alturas recuperadas para los distintos radios es la misma. Esto nos permite tomar un promedio en la dirección radial para cada banda de alturas, y obtener así, por cada fotograma, una línea de alturas en función del 
+ángulo. Al apilar las alturas para cada tiempo se obtiene un diagrama espacio-temporal de la medición. En la figura \ref{fig:polares_and_st} se puede observar la transformación de coordenadas y un diagrama espacio temporal. 
+
+\begin{figure}[H]
+    \centering
+    \subfloat[Transformación de coordenadas cartesianas a polares.]{{\includegraphics[height=5cm]{figs/to_strip.jpg} }}%
+    \subfloat[Diagrama espacio temporal.]{{\includegraphics[height=5cm ]{figs/st_MED11_no_zoom.pdf} }}%
+    \caption{Transformación del anillo a coordenadas polares en una tira (izquierda). Estas tiras se promedian en dirección radial y se apilan para lograr el diagrama espacio temporal (derecha) que da cuenta de la dinámica del sistema. }%
+    \label{fig:polares_and_st}
+\end{figure}
+
+
+
+\end{document}

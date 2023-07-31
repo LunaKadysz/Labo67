@@ -11,8 +11,8 @@ Created on Mon Jun 12 13:03:26 2023
 import matplotlib.pyplot as plt
 import Muestras2 as ms
 
-#path_abs = r'C:\Users\Luna\Documents\UBA\Labo6-7\Labo67\Labo6\Proyecto'
-path_abs = r'C:\Users\Usuario\Documents\luna_kadysz\Labo67\Labo6\Proyecto'
+path_abs = r'C:\Users\Luna\Documents\UBA\Labo6-7\Labo67\Labo6\Proyecto'
+#path_abs = r'C:\Users\Usuario\Documents\luna_kadysz\Labo67\Labo6\Proyecto'
 ms.os.chdir(path_abs)
 #os.getcwd()
 

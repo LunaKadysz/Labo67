@@ -1,0 +1,29 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+La obtención de la superficie libre del fluido y el cálculo de los diagramas espacio-temporales requiere un manejo amplio y eficiente de muchos archivos diversos. Con el objetivo de organizar los resultados de las mediciones, y de poder acceder a ellos eficientemente, incorporamos dentro de nuestro flujo de trabajo la escritura y lectura de archivos HDF5. Este formato de archivo nos permite guardar y organizar múltiples conjuntos de datos junto a su metadata y acceder a ellos de manera más óptima.
+
+Durante Laboratorio 6 y 7 tomamos más de 70 mediciones de $12 \si{s}$ cada una a $250 \si{fps}$. Una medición cruda ocupa en memoria $4\si{GB}$. Al procesarla este número asciende a $40\si{GB}$ debido a la transformación, al realizar FTP, de imágenes con valores enteros a datos de tipo flotante. Finalmente, un diagrama espacio-temporal ocupa en memoria tan solo $100\si{MB}$.
+
+Para que el acceso a datos de tanto tamaño sea rápido es necesario fragmentar la información inteligentemente. En nuestro caso la mayor parte del volumen de memoria es ocupada por las imágenes obtenidas de la filmación, ya que estamos grabando varios segundos a una taza de fotogramas elevada (alrededor de $3072$ imágenes de $1024\cross 1024 \, \si{px}$ por medición). Cargar todas estas imágenes en memoria es ineficiente, y aplicar el algoritmo de FTP a cada una de ellas, manteniendo el resto abiertas, es prácticamente imposible para una computadora de hogar. Por lo tanto, guardar todo el video en un único array de $1024 \cross 1024 \cross 3072$ no es factible. Una segunda opción posible podría ser leer de a una imagen por vez, realizando FTP a cada una de ellas y luego ir guardándolas. Este planteamiento es factible, pero es muy lento ya que requiere abrir y cerrar la lectura de un archivo pesado por cada una de las imágenes.
+
+Para solucionar este problema utilizamos la tecnología de \textit{chunking} que nos facilita el protocolo de HDF5. Esta técnica consiste en fragmentar el array de $1024 \cross 1024 \cross 3072$ en bloques más pequeños y acceder a ellos de forma independiente. Una representación esquemática de este proceso se puede observar en la figura \ref{fig:hdf5_chunk}. Esta fragmentación, además de permitirnos tener sólo en memoria las imágenes que necesitamos en cada momento, nos permite acceder a regiones espaciales, para todo tiempo, sin tener que cargar todas las imágenes. Por ejemplo, si se deseara estudiar sólo una mitad del anillo para todo el largo de la medición con el esquema de guardado tradicional se debería pasar por las todas las imágenes completas; en cambio, de esta forma, es posible adquirir sólo la región de interés y así no sobrecargar la memoria.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figs/hdf5_chunk.pdf}
+    \caption{Ejemplo de \textit{chunking} para $300$ imágenes de $8\cross 8\,\si{px}$. A la izquierda se observa un esquema del array completo y a derecha la fragmentación de este array en \textit{chunks} de $2\cross4\cross3$.}
+    \label{fig:hdf5_chunk}
+\end{figure}
+
+La escritura de la información en formato HDF5 se incorporó trasversalmente a todas las instancias del análisis, creando tres archivos de este formato correspondientes a cada instancia para cada medición. En la figura \ref{fig:flujo_hdf5_ftp_st} se puede observar el diagrama de flujo del cómputo de las imágenes para un conjunto de mediciones y las instancias en las que se escribe cada archivo.
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{figs/flujo_HDF5_FTP_ST.pdf}
+    \caption{Representación esquemática del procesamiento de las mediciones. Cada color representa un conjunto de funciones centradas en una tarea específica y el resultado de esta tarea. Los detalles de cada parte del procesamiento se encuentran en esta misma sección.}
+    \label{fig:flujo_hdf5_ftp_st}
+\end{figure}
+\end{document}

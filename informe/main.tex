@@ -1,0 +1,93 @@
+\documentclass[onecolumn, amsmath, amssymb, aps]{revtex4-2}
+
+%\usepackage{silence}
+%\usepackage{preamble}
+
+\usepackage{physics}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{enumerate}
+\usepackage{siunitx}
+\usepackage[makeroom]{cancel}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{lmodern}
+\usepackage{upgreek}
+\usepackage{dsfont}
+\usepackage{wrapfig} % wrap figure in text
+\usepackage{geometry}
+%\usepackage{caption}
+\usepackage[pdf]{graphviz}
+\usepackage[most]{tcolorbox}
+% Don't indent paragraphs, leave some space between them
+%\usepackage{parskip}
+\usepackage[]{quoting}
+\usepackage{subfiles}
+\usepackage[caption=false]{subfig}
+\usepackage{dcolumn}% Align table columns on decimal point
+
+\raggedbottom
+
+\definecolor{alert-color}{rgb}{0.82, 0.1, 0.26} % alizarin
+\newcommand{\Cr}[1]{\textbf{\textcolor{alert-color}{#1}}}
+
+
+\def\bibsection{\section*{Referencias}} % delete ugly reference line
+
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+\renewcommand\tablename{TABLA}
+
+\begin{document}
+\subfile{sections/caratula_y_firmas.tex}
+
+\title{Laboratorio 6 y 7 - Modulación de fase en Ondas Faraday y oscilones}
+\author{Bernardo Español}
+\email{esp.bernardo@gmail.com}
+
+\author{Melisa Vinograd}
+\email{melivinograd@gmail.com}
+
+\affiliation{
+Universidad de Buenos Aires}
+
+\author{Dr. Pablo Cobelli}
+\email{cobelli@df.uba.ar}
+\affiliation{
+Laboratorio de Turbulencia Geofísica, FLiP: Fluidos y Plasmas}
+
+\section*{Resumen}
+\subfile{sections/resumen.tex}
+
+\section{Introducción}
+\subfile{sections/introduccion.tex}
+
+\section{Montaje experimental}
+\subfile{sections/montaje_experimental.tex}
+
+\section{Extracción de la superficie libre}
+\subfile{sections/extraccion_de_la_superficie_libre.tex}
+
+\section{Resultados}
+\subfile{sections/resultados.tex}
+
+\section{Sumario y perspectivas}
+\subfile{sections/sumario_y_perspectivas.tex}
+
+\section*{Anexo}
+\subfile{sections/anexo.tex}
+
+% Referencias
+\bibliographystyle{unsrt}
+\bibliography{bibliography}
+
+
+%\section*{Punteo del informe}
+%\begin{itemize}
+%\item Un largo total de 15 carillas de contenido parece razonable.
+%\item Cuantificar la velocidad del algoritmo y cómo escala.
+%\item Realizar un diagrama de flujo del algoritmo.
+%\item Empezar por resultados.
+%\end{itemize}
+
+\end{document}

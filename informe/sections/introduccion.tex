@@ -1,0 +1,38 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+%% Plan de trabajo
+Este trabajo, en el marco de la materia Laboratorio 6-7, busca realizar un estudio experimental tendiente a explorar el rol que la modulación de fase juega en la formación de patrones en ondas de Faraday y oscilones en el límite de escalas temporales largas. Samantha Kucher hacia el final de su tesis hace una breve incursión en este fenómeno y presenta resultados novedosos para el caso unidimensional \cite{kucher_modulacion_2019}. Continuando este análisis, nos interesa estudiar cómo y en qué regímenes la modulación afecta a los mecanismos de formación de patrones y si la misma es responsable por la emergencia de ﬂujos medios y/o estructuras coherentes. Para ello, proponemos medir la dinámica de las ondas superﬁciales empleando una técnica de proﬁlometría de alta resolución espacio-temporal y estudiar la dinámica del sistema mediante distintas herramientas. Este trabajo propuesto permitiría en un futuro cercano realizar un modelado del sistema en términos del formalismo de ecuaciones de amplitud.
+La generación paramétrica de ondas por medio de un campo oscilatorio espacialmente uniforme ha sido observada en diversas áreas de la física: desde las ondas de Langmuir en plasmas hasta la aparición de ondas de Faraday en condensados de Bose-Einstein, pasando por ondas de Faraday en superﬂuidos; para citar algunos ejemplos recientes. 
+
+En particular, la excitación paramétrica de ondas superﬁciales de gravedad–capilaridad en una capa horizontal de ﬂuido sujeta a vibración vertical (conocida como inestabilidad de Faraday \cite{faraday_peculiar_1831}) provee de un modelo experimental completo que permite el estudio de la ampliﬁcación paramétrica en sistemas espaciales extensos, es decir, en sistemas con un gran número de grados de libertad.
+
+En la última década, esta temática ha experimentado un renovado interés en la comunidad cientíﬁca internacional, y ha sido objeto de numerosas publicaciones de alto impacto tanto en el área de sistemas no lineales forzados fuera del equilibrio como en dinámica de ﬂuidos. Entre ellas, el interés se ha centrado en diversos aspectos del mecanismo
+
+de interacción entre grados de libertad, como son: la transición a desorden espacio-temporal \cite{wesfreid_propagation_1988}, la emergencia de caos temporal \cite{keolian_subharmonic_1981}, la selección de patrones (tanto globales como locales) \cite{binks_nonlinear_1997, chen_nonlinear_2002, kumar_competing_1995}, la observación de cuasi-patrones \cite{edwards_patterns_1994}, la competencia entre modos caóticos y periódicos \cite{ciliberto_chaotic_1985}, aparición de ﬂujos medios \cite{higuera_faraday_2008, perinet_streaming_2017}, la observación de ondas de Faraday con histéresis \cite{perinet_hysteretic_2016}, la transición a la turbulencia \cite{shani_localized_2010, shats_turbulence_2014} y la emergencia de estructuras coherentes \cite{francois_inverse_2013, francois_three-dimensional_2014}.
+
+No obstante el gran número de estudios teóricos, numéricos y experimentales que han explorado los diversos mecanismos de la generación paramétrica de ondas de gravedad–capilaridad, éstos se han centrado exclusivamente en el régimen de forzado constante, tanto en espacio como en tiempo. En este sentido, el rol que la modulación temporal o de fase podría tener en la dinámica de estos sistemas con gran cantidad de grados de libertad en interacción no lineal, en particular para la formación o la inhibición de patrones, constituye un interrogante abierto.
+
+A continuación presentamos brevemente los conceptos con los que vamos a trabajar a lo largo de la experiencia. 
+
+\subsection{Ondas de Faraday}
+Las ondas de Faraday se generan cuando una capa de fluido es agitada verticalmente más allá de un valor de aceleración umbral, y dan lugar a la formación de patrones periódicos en la superficie libre. En la figura \ref{fig:faraday} se puede observar un esquema del movimiento de ésta durante un período de la oscilación. Inicialmente el recipiente es acelerado hacia abajo, y desacelera hasta alcanzar su posición mínima. Durante esta desaceleración se crea una deformación en la superficie libre. Para
+$t = \frac{1}{2}T$ (donde $T$ es el período del forzado), el recipiente se encuentra en su altura mínima y las ondas generadas en la interfaz aire-líquido alcanzan su máxima amplitud. Luego comienza el movimiento hacia arriba, que provoca la reducción de las deformaciones en la superficie hasta que desaparecen para $t = T$ . Al cabo de medio período más ($t = \frac{3}{2}T$ ), se intercambia la posición de los máximos y mínimos en la interfaz. Entre el inicio del movimiento y $t = T$ el recipiente ha realizado una oscilación completa pero las ondas de
+Faraday sólo han completado media oscilación. Por lo tanto, el período de oscilación de las ondas superficiales resulta $T_0 = 2T$ .
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{imgs/faraday.jpg}
+    \caption{Esquema de la superficie libre durante un período de la oscilación. Imagen tomada del trabajo de Douady\cite{douady_experimental_1990}.}
+    \label{fig:faraday}
+\end{figure}
+
+\subsection{Oscilones}
+Otro fenómeno a estudiar en el sistema es la presencia de oscilones. Lioubashevski, Hamiel, Agnon, Reches y Fineberg \cite{lioubashevski_oscillons_1999} definen \textit{oscilones} como regiones circulares localizadas que oscilan entre picos cónicos y cráteres cuyo período es la mitad del período del forzado y \textit{estructuras solitarias propagativas disipativas} como estados propagativos de gran amplitud altamente localizados que aparecen en fluidos muy disipativos y conservan la periodicidad del forzado. Argumentan que para que un oscilón transicione en uno de estos estados es necesario un sistema con alta disipación e histéresis y una ruptura de simetría de reflexión vertical. 
+
+Shats, Xia y Punzmann \cite{shats_parametrically_2012} reportaron oscilones en un experimento de Faraday bidimensional, y afirman que las ondas de Faraday en realidad no son ondas sino oscilones, basándose en el hecho de que la inserción de placas verticales en la superficie libre no afecta el patrón, como sí debería pasar en el caso de ondas estacionarias. 
+
+Finalmente, en 2015 León, Clerc y Coulibaly \cite{leon_traveling_2015} dan una posible explicación a este fenómeno para el caso unidimensional. Muestran que agregando un término cuadrático en la derivada espacial a la ecuación de Schrödinger no lineal (\textit{amended parametrically driven damped nonlinear Schrödinger equation}) se encuentran pulsos viajeros sobre un patrón periódico. 
+
+
+\end{document}

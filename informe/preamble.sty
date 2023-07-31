@@ -1,0 +1,37 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{preamble_bibliography}
+
+% Packages
+	\usepackage{physics}
+	\usepackage{float}
+	\usepackage{xcolor}
+	\usepackage{enumerate}
+	\usepackage{siunitx}
+	\usepackage[makeroom]{cancel}
+	\usepackage[framemethod=tikz]{mdframed}
+	\usepackage{lmodern}
+	\usepackage{upgreek}
+	\usepackage{dsfont}
+	\usepackage{wrapfig} % wrap figure in text
+	\usepackage{geometry}
+	\usepackage[pdf]{graphviz}
+	\usepackage[most]{tcolorbox}
+	% Don't indent paragraphs, leave some space between them
+	\usepackage{parskip}
+	\usepackage[]{quoting}
+	\usepackage{subfiles}
+	\usepackage{subfig}
+
+% Smaller captions
+\captionsetup[figure]{font=footnotesize}
+\captionsetup[table]{font=footnotesize}
+\renewcommand{\figurename}{Figura}
+%\renewcommand\tablename{Tabla}
+\renewcaptionname{\tablename}{TABLA}
+
+
+% New comands
+	% Cite
+	\newcommand{\q}[1]{``#1''}
+
+\endinput

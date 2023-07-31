@@ -10,8 +10,8 @@ import pandas as pd
 import numpy as np
 import os
 
-#path_abs = r'C:\Users\Luna\Documents\UBA\Labo6-7\Labo67\Labo6\Proyecto'
-path_abs = r'C:\Users\Usuario\Documents\luna_kadysz\Labo67\Labo6\Proyecto'
+path_abs = r'C:\Users\Luna\Documents\UBA\Labo6-7\Labo67\Labo6\Proyecto'
+#path_abs = r'C:\Users\Usuario\Documents\luna_kadysz\Labo67\Labo6\Proyecto'
 os.chdir(path_abs)
 #os.getcwd()
 #%%
@@ -178,20 +178,23 @@ class Muestra:
 
 
 
-    def get_error_multimetro(self,df_e, muestra,i,R,rango):
+    def get_error_multimetro(self,df_e, R_max,R_min,R,rango):
         """
         Esta funcion se usa dentro del metodo del metodo que carga resistencias a 
         temperatura ambiente para asignarle el error a cada medicion.
 
         """
-        
         #pongo como condicion que para que sea del rango 0< R/Rango <1
         df_error = df_e[((R/df_e['Range'])> 1/1000) & ((R/df_e['Range'])< 1) & (df_e['Range2']== f' {rango}')]
-        coefs = list(df_error['1 Year 23°C + 5°C'])[0].split('+')
-        m = float(coefs[0])
-        b = float(coefs[1])
-        c_a = R * m / 100 + b #error aparato
-        c_b = (float(muestra['R_max'][i]) - float(muestra['R_min'][i]))/np.sqrt(100) #error estadistico
+        print(df_error)
+        #coefs = list(df_error['1 Year 23°C + 5°C'])[0].split('+')
+        #print(coefs)
+        #m = float(coefs[0])
+        #b = float(coefs[1])
+        #c_a = R * m / 100 + b #error aparato
+        c_a = 0
+        print(c_a)
+        c_b = (R_max - R_min)/np.sqrt(100) #error estadistico
         return c_a + c_b
     
         

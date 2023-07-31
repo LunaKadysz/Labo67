@@ -1,0 +1,69 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+Existen distintos métodos para medir deformación de la superficie libre. Se optó por utilizar el método FTP (Fourier Transform Profilometry \cite{takeda_fourier-transform_1982}), que se basa en el cálculo de la diferencia de fase entre un patrón proyectado de referencia (con el líquido quieto) y un patrón deformado (con el líquido en movimiento debido al forzado). A partir de esa diferencia de fase, de la distancia entre los focos de la cámara y el videoproyector, la distancia entre el foco de la cámara y la superficie del fluido, y del patrón proyectado, se puede calcular la altura correspondiente a cada píxel de la cámara. Si la distancia entre el foco de la cámara y la superficie libre del fluido es mucho mayor que la distancia entre los focos de la cámara y el videoproyector, entonces la fase será proporcional a la altura. El método elegido es no invasivo y permite estudiar el fenómeno de manera global. El mismo consta de varios pasos y requiere obtener distintas imágenes. A continuación, se detalla este proceso. En la figura \ref{ftp_esquema} se observa la disposición general necesaria para realizar este método. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{figs/ftp_experimental.pdf}
+    \caption{Esquema para realizar FTP. Se requiere de un proyector para proyectar patrones en el fluido a deformarse y una cámara de alta velocidad. Los mismos deben estar separados una distancia $D$ mucho menor que la distancia $L$ a la superficie libre. Este método permite recuperar las alturas $H$ punto a punto.}
+    \label{fig:ftp_esquema} 
+\end{figure}
+
+Antes de poner al sistema a oscilar se debe tomar una imagen de la celda llena iluminada (fotografía \textit{white}), ésta permite extraer máscaras de las regiones de interés: el anillo y un rectángulo adosado a la celda. Este último es un área pintada del mismo color que el fluido para poder también proyectar sobre ella y permite, al quedar quieta, tener una referencia de la altura inicial ya que se encuentra a la misma altura que la superficie libre (en el foco de la cámara). En la figura \ref{fig:white_mask} se puede observar las máscaras obtenidas luego de aplicar un algoritmo de reconocimiento de regiones y un filtrado de las mismas. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figs/white_mask.pdf}
+    \caption{Imagen iluminada \textit{white} (izquierda) y las máscaras de las regiones de interés obtenidas de la misma (derecha).Se obtiene el área del anillo y del rectángulo pintado. }
+    \label{fig:white_mask}
+\end{figure}
+
+
+Se toman también imágenes \textit{gray}, cuyo promedio se le resta a todas las imágenes para eliminar efectos de iluminación. Otro paso previo a prender el forzado implica tomar imágenes con el líquido quieto, pero proyectando el patrón de franjas. A estas imágenes \textit{de referencia} se les realiza el recorte con las máscaras para quedarse con las regiones de interés. Habiendo aislado las áreas queda una imagen con patrones en el área del anillo, pero rodeada de espacios vacíos. Como el método FTP a utilizar requiere del cálculo de la transformada de Fourier, los bordes en estas discontinuidades presentan un problema. Esto se debe a que la transformada presenta un ruido espúreo producto de las dislocaciones. De modo de evitar esta dificultad se emplea el algoritmo de Gerchberg \cite{gerchberg_super-resolution_1974}. El mismo permite completar coherentemente el patrón obteniendo una \textit{filled reference }como puede observarse en la figura \ref{fig:ref_gerch} mediante la aplicación iterativa de transformaciones y antitransformaciones de Fourier. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figs/ref_gerch.pdf}
+    \caption{Imagen con el patrón de referencia (izquierda) y su correspondiente completado mediante el algoritmo de Gerchberg (derecha).}
+    \label{fig:ref_gerch}
+\end{figure}
+
+Con las imágenes de la superficie libre deformada podría seguirse el mismo camino y completar cada fotograma de la filmación con este algoritmo. Esto es lo que se realizó en trabajos previos como el de Kucher. La aplicación de un algoritmo iterativo para cada fotograma de una medición requiere un gran tiempo de cómputo, por lo que en este trabajo se propone un nuevo arreglo para las mediciones deformadas. Este arreglo consiste en generar un híbrido entre la imagen que se desea completar y una ya completada (como la \textit{filled reference}), de modo de rellenar los lugares en los que no está el anillo. Para evitar saltos abruptos se une este parche con ventanas de tipo \textit{Tukey}, que al tener un decaimiento tipo coseno no agrega ruido a la transformada de Fourier. La ventaja de este método es que por cada video completo se debe realizar una única corrida del algoritmo de Gerchberg. 
+En la figura \ref{fig:deformed_hybrid} se observa un fotograma del patrón deformado y su completado \textit{hybrid} correspondiente. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figs/def_hybrid.pdf}
+    \caption{Imagen del patrón deformado para dado tiempo (izquierda) y su correspondiente completado \textit{hybrid} (derecha).}
+    \label{fig:deformed_hybrid}
+\end{figure}
+
+El método FTP calcula la diferencia de fase entre la imagen de referencia completa \textit{filled reference} y la imagen deformada completada \textit{hybrid} obteniendo así la diferencia entre la superficie libre y la altura inicial del sistema como se observa en la figura \ref{fig:height}. Se toma como altura de referencia a la altura asociada al patrón proyectado sobre el rectángulo pintado solidario a la celda. Los resultados de los campos de alturas al utilizar el método de la imagen deformada híbrida son comparables con los obtenidos en trabajos previos. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{figs/ALTURAS.pdf}
+    \caption{Alturas de la superficie libre del anillo obtenidas mediante el método de FTP (en unidades arbitrarias). }
+    \label{fig:height}
+\end{figure}
+
+
+En la figura \ref{fig:flujo_ftp} se observa de manera esquemática el proceso completo para realizar FTP. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figs/flujo_FTP.pdf}
+    \caption{Representación esquemática del algoritmo de FTP. Cada color corresponde a un conjunto de funciones centradas en una tarea específica que se detallaron en esta sección. }
+    \label{fig:flujo_ftp}
+\end{figure}
+
+% \begin{itemize}
+% 	\item Para extraer la superficie libre se usa FTP que consiste en diferencia de fase entre el patrón quieto y moviéndose.
+% 	\item Claramente se normaliza la luz total en las imagenes con las que se trabaja.
+% 	\item Para hacer esto tenemos que separar el area de interés: máscara.
+% 	\item Una vez separada el area de interés tenemos el problema de que fourier explota: gerchberg.
+% 	\item La priemera idea, y lo que se venía haciendo era hacer gerchberg en todas las deformadas, pero nosotros somos mejores. Mostramos nuestor parche.
+% 	\item Con todo esto podemos hacer FTP: Esquema de FTP.
+% \end{itemize}
+\end{document}

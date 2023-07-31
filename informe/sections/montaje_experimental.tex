@@ -1,0 +1,32 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+En el marco de la materia Laboratorio 6 y 7 pusimos a punto y caracterizamos un montaje experimental en el grupo de Fluidos y Plasmas (FLiP) del Departamento de Física. Los detalles de diseño y la capacidad del montaje se detalla en esta sección. En la figura \ref{img:montaje} se observa una imagen del dispositivo y un esquema del mismo. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{imgs/montaje_both.jpg}
+    \caption{\textbf{(IZQ)} Fotografía del montaje en el laboratorio. \textbf{(DER)} Esquema del dispositivo experimental utilizado para este trabajo. El mismo se encuentra en el laboratorio de Turbulencia Geofísica del Departamento de Física de la Universidad de Buenos Aires.}
+    \label{img:montaje}
+\end{figure}
+
+
+Con el objetivo de estudiar la dinámica de un fluido sujeto a un forzado vertical, se coloca el líquido en un recipiente de acrílico que consta de dos partes: un anillo de $(5\pm 2)\si{mm}$  de espesor (radio interno de $(205\pm1)\si{mm}$ y externo de $(211\pm1)\si{mm}$) y una región central circular de $(170 \pm 1)\si{mm}$ de diámetro. Ambas partes tienen $(10\pm1)\si{mm}$ de profundidad. Si bien el sistema permite llenar tanto el disco como en el anillo, este trabajo se centra en este último. Las dimensiones de este anillo fueron elegidas de manera que su ancho sea menor que la longitud de onda característica del fenómeno a estudiar, lo que impide la formación de patrones en la dirección radial de modo que, para este experimento, se cumplen las condiciones de un sistema unidimensional con condiciones de contorno periódicas. 
+
+El fluido utilizado es agua destilada con dióxido de titanio; este último se utiliza para teñir el agua de color blanco y poder proyectar sobre su superficie libre. El volumen del anillo es de aproximadamente $33\,\si{ml}$, los cuales se llenan con $3\,\si{g/l}$ de dióxido de titanio. Esta concentración preserva las propiedades reológicas del agua (no afecta su viscosidad ni la tensión superficial). Al realizar la experiencia se tomó la precaución de llenar la celda siempre hasta la misma altura, dado que las ondas de Faraday a estudiar son sensibles a la profundidad. A su vez, se debe trabajar en la configuración \textit{pinned surface}. Es decir, llenando hasta el borde del recipiente para evitar perturbaciones producidas por el meñisco (éste emite a su vez ondas que pueden llegar a competir con el fenómeno a estudiar \cite{douady_experimental_1990}). 
+
+Para excitar al sistema se coloca esta pieza sobre un parlante conectado a un generador de funciones \textit{Siglent SDG-1010}, cuya señal se comprueba mediante una conexión a un osciloscopio \textit{Siglent SDS-1152CML} que permite verificar la señal enviada. Para caracterizar el fenómeno se trabaja tanto con señales armónicas con fase dependiente del tiempo (señales moduladas) como independientes. Los resultados presentados en este trabajo se realizaron con señales con frecuencia de $20\si{Hz}$ y amplitudes en los rangos de $6$ a $17.5$ Vpp. Los anchos de banda del generador y el osciloscopio son, respectivamente, $10\si{MHz}$ y $150\si{MHz}$.
+
+Sobre el anillo se coloca una cámara rápida \textit{Photron 1024PCI} que saca imágenes en blanco y negro. Ésta se controla mediante computadora con su software propio \textit{FVP 351}. Para evitar reflejos, se añadió un polarizador frente a la lente. La frecuencia de muestreo utilizada para las primeras mediciones fue de $250$ frames por segundo que permite resolver la dinámica. Se usa una velocidad de obturación de $0.004\,\si{s}$ y una resolución de imágenes de $1024 \cross 1024$ píxeles. Las grabaciones se almacenan en formato 10-bits en una memoria interna de la cámara. Para los parámetros elegidos, ésta se llena a las 3072 imágenes tomadas (unos $12\si{s}$ de medición). 
+
+Al costado de la cámara se coloca un proyector de video de alta resolución \textit{Epson Pro Cinema 9700UB}. El mismo permite proyectar distintos patrones de características conocidas sobre la celda, así como controlar la iluminación de la misma.  
+
+De modo de poder medir la aceleración del sistema (el parámetro de control para este experimento) se agrega al dispositivo un acelerómetro de manera tal que se moviera solidario a la celda. Éste permite tanto medir la aceleración vertical como controlar que no haya \textit{sloshing} en las direcciones del plano perpendicular a la excitación. De esa manera se asegura que el movimiento que predomina en el sistema sea el vertical dado por el forzado con desplazamientos laterales despreciables. El acelerómetro utilizado es el ADXL345 de \textit{SparkFun} conectado a una placa Arduino ONE. 
+
+Para limitar la inclinación del sistema se agregó una plataforma con tres patas regulables de acero que sostienen una caja con arena para evitar vibraciones. Sobre este recipiente se apoyó el parlante. 
+
+Los experimentos consisten en poner el sistema a oscilar con un forzado dado por el generador de funciones (una función sinusoidal que puede o no estar modulada en fase) y tomar una filmación con la cámara. Se guardan para cada configuración imágenes con distintos patrones proyectados, las mediciones del acelerómetro y los datos con los parámetros pertinentes de la experiencia.
+
+En la siguiente sección se presenta el método desarrollado para extraer la superficie libre del líquido, los resultados preliminares obtenidos y un breve análisis de ellos.
+
+\end{document}

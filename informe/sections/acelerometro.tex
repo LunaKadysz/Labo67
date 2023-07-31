@@ -1,0 +1,83 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\subsubsection{Configuración}
+El acelerómetro utilizado para medir el movimiento solidario a la celda fue un ADXL345. Para adquirir los datos del mismo se lo conectó a una placa Arduino ONE siguiendo el cableado que se muestra en la figura \ref{fig:cableado}. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\linewidth]{imgs/cableado_ONE.png}
+    \caption{Conexión del acelerómetro ADXL345 a la placa Arduino ONE. El sistema se conecta a una computadora desde donde se lo controla para la transferencia de datos.}
+    \label{fig:cableado}
+\end{figure}
+
+
+Se realizaron los programas necesarios para comunicarse con el acelerómetro, así como para guardar de manera ordenada los datos de cada medición. En la tabla \ref{tab:acelerometro} se encuentran algunas de las especificaciones tomadas en cuenta para resolver de manera correcta la oscilación a estudiar. 
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l}  
+Rango dinámico & $\pm 4 \mathrm{~g}$ \\ Resolución en gravedad & $10 \mathrm{bits}$\\
+Resolución temporal & $1000 \mathrm{~Hz}$ \\ Protocolo de transferencia de datos & $\mathrm{I2P}$ \\
+Baud rate & 115200 $\mathrm{bps}$
+\end{tabular}
+\caption{Especificaciones del acelerómetro utilizado.}
+\label{tab:acelerometro}
+\end{table}
+
+\subsubsection{Calibración}
+El acelérometro de tres ejes utilizado produce una salida eléctrica con relación al movimiento $\mathbf{V^T} = [v_x, v_y, v_z]$. Requiere de una calibración precisa para darle significado físico a la salida y es condición necesaria para mediciones de calidad. 
+Se han propuesto distintos modelos para describir la relación entre estos sensores y su salida. Los modelos para hallar la aceleración $\mathbf{A}$ varían en general respecto a la cantidad de parámetros involucrados. Consideramos para este trabajo una calibración de 6 parámetros modelada de la siguiente manera: 
+
+\begin{equation*}
+\mathbf{A} = \mathbf{S}(\mathbf{V} - \mathbf{O})
+\end{equation*}
+
+donde
+
+\begin{equation*}
+   \mathbf{S}=\left[\begin{array}{ccc}
+    S_{x x} & 0 & 0 \\
+    0 & S_{y y} & 0 \\
+    0 & 0 & S_{z z}
+    \end{array}\right], \quad \mathbf{O}=\left[\begin{array}{c}
+    O_{x} \\
+    O_{y} \\
+    O_{z}
+    \end{array}\right] 
+\end{equation*}
+
+son las matrices de \textit{sensitividad} y \textit{offset}, respectivamente. Los elementos de la matriz diagonal $\mathbf{S}$ representan los factores de escala de los tres ejes. 
+
+El procedimiento para autocalibrar el acelerómetro se basa en el hecho de que el módulo de la aceleración, en condiciones estáticas, debe ser igual a la aceleración de la gravedad. Esto se formaliza en la ecuación para las lecturas del acelerómetro: 
+
+\begin{equation*}
+    \frac{\left(A_{x}-O_{x}\right)^{2}}{S_{x}^{2}}+\frac{\left(A_{y}-O_{y}\right)^{2}}{S_{y}^{2}}+\frac{\left(A_{z}-O_{z}\right)^{2}}{S_{z}^{2}}=g^{2}
+\end{equation*}
+
+Para poder realizar la calibración se tomaron 9 mediciones de 10.000 puntos cada una dejando el acelerómetro quieto en distintas posiciones aleatorias, pero linealmente independientes entre sí. Esto consigue un sistema sobredeterminado que se puede resolver computacionalmente con el método de la pseudoinversa. De esa manera se hallaron los siguientes valores para la \textit{sensitividad} $S_i$ de cada eje y su \textit{offset} $O_i$. 
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ccc}
+\hline$S_{x}$ & $S_{y}$ & $S_{z}$ \\
+\hline$128,32$ & $127.30$ & $124.49$ \\
+\hline \hline$O_{x}(g)$ & $O_{y}(g)$ & $O_{z}(g)$ \\
+\hline$1.72$ & $4.64$ & $5.18$
+\end{tabular}
+\label{tab:calibracion}
+\caption{Valores de \textit{sensitividad} y \textit{offset} para la calibración del acelerómetro.}
+\end{table}
+
+Con la calibración realizada se pudo comprobar el movimiento vertical del sistema. En la figura \ref{fig:calib_acel} se puede observar la aceleración obtenida por el acelerómetro para una medición de prueba. En la misma se dejó quieto al sistema, como si de una medición de calibración se tratara, para luego prender el forzado. El acelerómetro se orientó con el eje z en dirección de la gravedad. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{figs/calib_accelerometer.pdf}
+    \caption{Aceleración del sistema en los tres ejes en función del tiempo. A partir de los 2s se prendió el forzado. Se comprueba que en el plano perpendicular al movimiento (ejes x e y) la aceleración es despreciable y no cambia al iniciar el movimiento. Para el eje vertical z la celda responde acorde a la excitación.}
+    \label{fig:calib_acel}
+\end{figure}
+
+Para la medición mostrada se confirma que el \textit{sloshing} del sistema es despreciable. La aceleración en x y en y (el plano perpendicular a la excitación) se mantiene en valores cercanos a cero, aún al prender el forzado. En el plano vertical los valores oscilan simétricamente respecto a la gravedad $g=9.81 \, m/s^2$. 
+
+\end{document}

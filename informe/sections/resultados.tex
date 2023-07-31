@@ -1,0 +1,129 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+Durante este Laboratorio se tomaron más de 70 mediciones, lo cual corresponde a más de 14 horas de colección de datos de manera continua. Este cálculo no tiene en cuenta el armado de montajes, la puesta a punto de la técnica y la toma de mediciones de calibración y pruebas. Para el procesado de datos se desarrollaron módulos que permitieron no sólo extraer la dinámica de la superficie libre mediante la técnica FTP, sino realizar diversos análisis que se proceden a contar en esta sección. El análisis de las imágenes con FTP demora, para una medición de $12 \si{s}$ aproximadamente $1$ hora. Para disminuir esta tasa, se paralelizó el código reduciendo el tiempo del procesado de una medición a $10$ minutos. 
+
+Dada la gran cantidad de datos adquiridos, si bien los analizamos y comparamos, elegimos mostrar en esta sección los resultados típicos de los distintos comportamientos característicos observados en el sistema. 
+
+\subsection{Zoología de resultados}
+Durante Laboratorio 6 y 7 tomamos algunas mediciones exploratorias. El sistema permite variar amplitud, frecuencia y frecuencia de modulación. Modificar estos parámetros de forzado permite determinar en qué regiones del espacio se observan los fenómenos a estudiar. 
+Con el objetivo de comprobar y evaluar los algoritmos y procesos de medición desarrollados, pudimos tomar datos que se muestran a continuación. El rango elegido para explorar fue aquel en que se observaran ondas de Faraday sin desborde. 
+
+Los 3 comportamientos característicos del sistema se pueden observar en los diagramas espacio-temporales de la figura \ref{fig:zoologia}. Los mismos dependen del modo de excitación del sistema, monitoreada con el acelerómetro. Se muestran dos mediciones en regímenes de baja y alta aceleración correspondientes a oscilones suaves y fuertes, respectivamente. Esto corresponde a excitaciones de $(16.0 \pm 0.7) \si{Vpp}$ y $(20.5\pm0.9)\si{Vpp}$. Los tres diagramas se construyeron con mediciones de $12$ segundos a $250$ frames, lo que equivale a $3072$ lineas en la dirección vertical. La frecuencia del sistema utilizada fue de $f = 20 \si{Hz}$ en todos los casos. Para la tercera imagen se introdujo modulación de fase $f_{mod} = 4 \si{Hz}$ a $(10.0 \pm 0.6) \si{Vpp}$.
+
+\begin{figure}[H]
+	\begin{minipage}{0.30\textwidth}
+		\includegraphics[width=\linewidth]{figs/st_zoologia_oscilones_suaves.pdf}
+	\end{minipage} \hfill
+	\begin{minipage}{0.30\textwidth}
+		\includegraphics[width=\linewidth]{figs/st_zoologia_oscilones_fuertes.pdf}
+	\end{minipage} \hfill
+	\begin{minipage}{0.30\textwidth}
+		\includegraphics[width=\linewidth]{figs/st_zoologia_modulación_de_fase.pdf}
+	\end{minipage}
+    \caption{Diagramas espacio-temporales de los comportamientos observados en el experimento. \textbf{Oscilones suaves}: característicos de voltajes menores a 16\si{Vpp}; para este caso particular se puede ver un comportamiento estacionario. \textbf{Oscilones fuertes}: característicos de voltajes mayores a 20\si{Vpp}; son siempre son propagativos con alguna velocidad constante en el tiempo. \textbf{Modulación de fase}: se obtienen ajustando el sistema con voltajes similares a los oscilones suaves pero modulando temporalmente la fase de la oscilación. Los diagramas espacio-temporales de estos últimos tienen tiempos y distancias características menos definidas que los otros dos casos.}
+    \label{fig:zoologia}
+\end{figure}
+
+Nos interesa trabajar con el sistema una vez superado el umbral de ondas de Faraday. Es decir, la aparición de oscilones, las estructuras coherentes localizadas espacialmente. Podemos distinguir dos regímenes: oscilones suaves y fuertes. Éstos se diferencian no sólo por su altura, sino también por el comportamiento a gran escala. Para aceleraciones bajas se presentan oscilones estacionarios, que suben y bajan sin moverse por el anillo. A medida que se va aumentando la aceleración del sistema comienza a aparecer una deriva. Los trenes de oscilones oscilan en la dirección vertical mientras que se trasladan por el anillo, dándole una vuelta completa en alrededor de $3 \si{s}$. Esto se evidencia en la líneas oblicuas de máximos de alturas que se observan a simple vista en el diagrama de Oscilones Fuertes por encima del mar de Faraday. El comportamiento de estas estructuras es altamente no lineal; no se mueven rígidamente, cambian su forma a medida que pasa el tiempo e incluso pueden llegar a desaparecer. 
+Al introducir una modulación de fase en el forzado del sistema se observan diagramas más diluidos debido a la desaparición de frecuencias características del sistema. 
+
+Una vez caracterizados los comportamientos generales del sistema y establecido los rangos de excitación para los cuales cada uno aparece se buscó caracterizar el comportamiento individual de los oscilones. 
+
+\subsection{Caracterización de oscilones}
+Para estudiar los oscilones se comenzó por identificarlos y ajustarlos por la predicción de la teoría para solitones. Esto es con una función tipo secante hiperbólica. En la figura  \ref{fig:ajuste_osc} se muestra el perfil de un oscilón superpuesto por su ajuste. Esto se realiza también en todo el anillo, permitiendo diferenciar la base de mar de Faraday sobre la que están montados los oscilones. Para ciertas mediciones los oscilones se encuentran en todo el anillo, logrando un máximo de $12$; mientras que para otras sólo se observa un tren de los mismos. El ajuste y la diferencia de altura permiten diferenciar los dos comportamientos: ondas de Faraday y oscilones. 
+
+\begin{figure}[H]
+	\begin{minipage}{0.46\textwidth}
+	    \includegraphics[width=\linewidth]{figs/fit_one_osc.pdf}
+	\end{minipage} \hfill
+	\begin{minipage}{0.46\textwidth}
+	    \includegraphics[width=\linewidth]{figs/fit_all_osc.pdf}
+	\end{minipage}
+    \caption{(\textbf{IZQ}) Ajuste del perfil de un oscilón con una función del tipo secante hiperbólica. (\textbf{DER A}) Ajuste para un conjunto de oscilones sobre el perímetro del anillo. (\textbf{DER B}) Ajuste para un tren de oscilones concentrada en una sección del anillo.}
+    \label{fig:ajuste_osc}
+\end{figure}
+
+Poder ajustar la geometría de los oscilones permite comprobar la predicción teórica, así como confirmar que nuestro método de extracción de la superficie libre permite resolver el fenómeno en las escalas de interés.
+Una vez realizado este análisis se puede ver la dinámica de los oscilones. Para esto interesa la velocidad con la que se mueven por el anillo en el caso de oscilones propagativos. La frecuencia de aparición de oscilones (o el tiempo entre la máxima amplitud de los mismos) corresponde, al igual que las ondas de Faraday, a la mitad de la frecuencia del forzado. Esto es para nuestro sistema $f = 10\si{Hz}$. Para calcular la velocidad se tomó la correlación entre dos instantes temporales separados a la frecuencia característica del sistema. Se guardaron las distancias angulares para las cuales esa correlación era máxima y junto con el período característico del fenómeno se halló la velocidad. Si se realiza un histograma de las velocidades halladas como se muestra en la figura \ref{fig:vel_osc} se puede ver que tiene una media bien definida sobre una distribución simétrica no gaussiana. Si se grafican las trayectorias con la velocidad hallada sobre los diagramas espacio-temporales se comprueba que éstas pasan efectivamente por los picos de altura de los oscilones.
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figs/velocidad_osc.pdf}
+    \caption{(\textbf{IZQ}) Diagrama espacio-temporal de la medición superpuesto por trayectorias con su velocidad característica.(\textbf{DER}) Histograma de velocidades detectadas para los oscilones propagativos de una medición; se toma la media de estos resultados como la velocidad característica de la medición. }
+    \label{fig:vel_osc}
+\end{figure}
+
+Luego de realizar una caracterización individual, nos enfocamos en fenómenos de grupo. Buscamos comportamientos con longitudes de onda comparables al perímetro del anillo.
+
+\subsection{Fenómenos de grupo}
+Como nuestro objetivo es estudiar fenómenos de grupo, y no el comportamiento individual de los oscilones, buscamos la curva que los envuelve. Para ello para cada frame detectamos los máximos de la señal espacial (el pico de los oscilones) y los interpolamos cúbicamente (figura  \ref{fig:envolvente_osc}). Luego, generamos un nuevo espacio temporal reemplazando cada frame por la envolvente obtenida (Envolvente espacial, figura \ref{fig:st_envelopes}). De este modo eliminamos las oscilaciones espaciales a frecuencias más altas que no nos interesan. Para eliminar las oscilaciones temporales realizamos un proceso similar pero en la dirección temporal (Envolvente espacio-temporal, figura \ref{fig:st_envelopes}). El patrón de inestabilidad mostrado en este ejemplo particular se discute con más detalle más adelante en esta sección.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{figs/env_1sample.pdf}
+    \caption{Altura de la superficie libre sobre el anillo para un tiempo fijo. Se marcaron los máximos de los oscilones detectados y la curva que los interpola.}
+    \label{fig:envolvente_osc}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figs/st_envelopes.pdf}
+    \caption{Diagramas espacio-temporales para tres instancias de procesado. (\textbf{IZQ}) Resultado directo obtenido por FTP. (\textbf{CEN}) Seguimiento de las envolventes espaciales de los oscilones. (\textbf{DER}) Seguimiento de las envolventes tanto espaciales como temporales de la superficie libre.}
+    \label{fig:st_envelopes}
+\end{figure}
+
+Realizar este tipo de análisis permite hallar estructuras en órdenes distintos. El patrón de lóbulos que se hace evidente por las envolventes recuerda a la inestabilidad de Taylor-Couette; usual en sistemas como el de cilindros coaxiales rotantes [\cite{taylor_couette}]. El estudio de esta inestabilidad es interesante en sí mismo dado la complejidad en la formación del patrón (típicamente dado por la interacción entre túneles turbulentos). 
+
+Un primer acercamiento al entendimiento de este fenómeno consistió en separar en el espacio Fourier las ondas propagativas a derecha e izquierda, donde se vio que esta forma característica del patrón es producto de la interacción entre las contribuciones de ambas direcciones (figura \ref{fig:ondas_propagativas_tc}). Además, en este resultado es sencillo distinguir que el tiempo característico entre patrones coincide con lo que tarda un oscilón en dar una vuelta completa al anillo (2.33\si{s}).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figs/st_left_right_taylor_couette.pdf}
+    \caption{Envolvente espacio-temporal para una medición con formación de patrones. (\textbf{IZQ}) Diagrama completo. (\textbf{CEN}) Contribución de las ondas propagativas a izquierda. (\textbf{DER}) Contribución de las ondas propagativas a derecha. La suma en el espacio de Fourier de las contribuciones a izquierda y derecha forman la imagen completa.}
+    \label{fig:ondas_propagativas_tc}
+\end{figure}
+
+Además, este proceso de separación nos permite seguir y diferenciar trenes de oscilones; ya que estos a veces se propagan en distintas direcciones para distintas secciones del anillo. Un resultado típico se ejemplifica en la figura \ref{fig:ondas_propagativas}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figs/st_left_right_med33.pdf}
+    \caption{Envolvente espacio-temporal para una medición con trenes de oscilones. (\textbf{IZQ}) Diagrama completo. (\textbf{CEN}) Contribución de las ondas propagativas a izquierda. (\textbf{DER}) Contribución de las ondas propagativas a derecha. La suma en el espacio de Fourier de las contribuciones a izquierda y derecha forman la imagen completa.}
+    \label{fig:ondas_propagativas}
+\end{figure}
+
+\subsection{Energía y relación de dispersión}
+Se estudió la relación de dispersión del sistema. Benjamin \& Ursell mostraron que cada modo dentro del recipiente
+se comporta como un oscilador armónico cuya frecuencia está dada por la relación de dispersión de ondas de gravedad-capilaridad. La relación para ondas de gravedad-capilaridad en agua con profundidad finita es $w_0^2 = \big( gk + \frac{\sigma k^3}{\rho} \big) tanh(kh)$; siendo $k$ el número de onda, $g$ la gravedad, $\sigma$ la tensión superficial, $\rho$ la densidad y $h$ la altura del recipiente. 
+
+En la figura \ref{fig:relacion_de_dispersion} se presenta el valor absoluto de la transformada de Fourier temporal y espacial, superpuesta con la curva teórica, en la cual se tomó $\rho = 997 \si{kg/m^3} $, $\sigma = 72e3 \si{N/m}$ y $h = 0.01 \si{m}$. 
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{0.46\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figs/dispersion_relation.pdf}
+	\end{minipage} \hfill
+	\begin{minipage}{0.46\textwidth}
+	    \includegraphics[width=\linewidth]{figs/dispersion_relation_mod_fase.pdf}
+	\end{minipage}
+    \caption{(\textbf{IZQ}) Relación de dispersión obtenida experimentalmente, superpuesta con la curva teórica. Se comprueba que el sistema tiene sus modos concentrados en la frecuencia característica $\omega = 10 \si{Hz}$ y sus armónicos. La relación de dispersión teórica no coincide con el resultado .(\textbf{DER}) Medición con modulación de fase. En este caso los modos se ven más dispersos. }
+    \label{fig:relacion_de_dispersion}
+\end{figure}
+
+La energía del sistema se concentra en los modos asociados a las frecuencias características esperadas. Es decir, $\omega = 10 \si{Hz}$ (la mitad de la frecuencia de forzado) y sus múltiplos. Para las mediciones con modulación de fase la energía se distribuye
+La relación analítica a primer orden no coincide con el resultado experimental. Esto se debe a la no linealidad de nuestro sistema, donde las correcciones a órdenes más altos no son despreciables. Un resultado previo que apoya esta hipótesis es el que se puede observar en la figura \ref{fig:relacion_de_dispersion_cobelli}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{figs/dispersion_relation_cobelli.png}
+    \caption{Espectro típico para un sistema en el régimen de ondas de gravedad. La línea punteada muestra la relación de dispersión lineal $\omega(k)$. La relación teórica también sobreestima los resultados experimentales en sistemas fuertemente no lineales. }
+    \label{fig:relacion_de_dispersion_cobelli}
+\end{figure}
+
+
+
+
+\end{document}
