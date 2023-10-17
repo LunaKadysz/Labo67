@@ -1,0 +1,147 @@
+AMPLIFICADOR_PROGRAMABLE_2 (PSpice format)
+**************************************
+**  This file was created by TINA   **
+**         www.tina.com             ** 
+**      (c) DesignSoft, Inc.        **          
+**     www.designsoftware.com       **
+**************************************
+.LIB "C:\Program Files (x86)\DesignSoft\Tina 9 - TI\EXAMPLES\SPICE\TSPICE.LIB"
+.LIB "C:\Program Files (x86)\DesignSoft\Tina 9 - TI\SPICELIB\Operational Amplifiers.LIB"
+.LIB
+.TEMP 27
+.AC DEC 164 8 10MEG
+.TRAN 200N 100U
+.DC LIN VG2 0 1 10M
+
+.OPTIONS ABSTOL=1P ITL1=150 ITL2=20 ITL4=10 TRTOL=7 
+.PROBE I(VAM2) I(VAM1) V([VF1])
+
+VAM2        10 0 ; Current Arrow
+VAM1        5 11 ; Current Arrow
+V4          V+ 0 12
+V3          0 V- 12
+VG2         5 71 DC 0 AC 1 0
++ SIN( 0 1 10K 0 0 0 )
+VG2_DC      71 0 1U
+C3          0 5 20P 
+C2          6 0 10P 
+C1          7 0 10P 
+R5          8 7 39K 
+R4          9 6 39K 
+XOP2         10 8 V+ V- 8 StdOpamp
++ PARAMS: GAIN=200K RIN=10T ROUT=75 SLEWRATE=13MEG FPOLE1=15 FPOLE2=9.45MEG VOFFS=3M IBIAS=30P IOFFS=5P VDROPOH=1.5 VDROPOL=1.5
+XOP1         11 9 V+ V- 9 StdOpamp
++ PARAMS: GAIN=200K RIN=10T ROUT=75 SLEWRATE=13MEG FPOLE1=15 FPOLE2=9.45MEG VOFFS=3M IBIAS=30P IOFFS=5P VDROPOH=1.5 VDROPOL=1.5
+XU2         7 6 V+ V- 12 0 RG1 RG2 INA110E_0
+R1          12 VF1 0 
+C6          VF1 0 24P 
+R2          VF1 0 100MEG 
+C5          0 V+ 1U 
+C4          0 V- 1U 
+
+
+.LIB "C:\Program Files (x86)\DesignSoft\Tina 9 - TI\SPICELIB\Instrument Amplifiers.LIB"
+* END MODEL INA163
+* INA110E = A1_110E + A2_110E + A3_110E OP AMPS + PRECISION RESISTOR NETWORK
+* "E" IS ENHANCED MODEL
+* CREATED ON 10/30/90 AT 15:01
+*
+* REV.B 3/21/92 BCB ADDED INPUT BIAS CURRENT CORRECTION
+*
+* ------------------------------------------------------------------------
+*|(C) COPYRIGHT TEXAS INSTRUMENTS INCORPORATED 2007. ALL RIGHTS RESERVED. |
+*|                                                                        |
+*|THIS MODEL IS DESIGNED AS AN AID FOR CUSTOMERS OF TEXAS INSTRUMENTS.    |
+*|NO WARRANTIES, EITHER EXPRESSED OR IMPLIED, WITH RESPECT TO THIS MODEL  |
+*|OR ITS FITNESS FOR A PARTICULAR PURPOSE IS CLAIMED BY TEXAS INSTRUMENTS |
+*|OR THE AUTHOR.  THE MODEL IS LICENSED SOLELY ON AN "AS IS" BASIS.  THE  |
+*|ENTIRE RISK AS TO ITS QUALITY AND PERFORMANCE IS WITH THE CUSTOMER.     |
+* ------------------------------------------------------------------------
+*
+***** INA110E SUB-CIRCUIT
+* CONNECTIONS:          NON-INVERTING INPUT
+*                       |   INVERTING INPUT
+*                       |   |   POSITIVE POWER SUPPLY
+*                       |   |   |   NEGATIVE POWER SUPPLY
+*                       |   |   |   |   OUTPUT
+*                       |   |   |   |   |   REFERENCE
+*                       |   |   |   |   |   |   GAIN SENSE 1
+*                       |   |   |   |   |   |   |   GAIN SENSE 2
+*                       |   |   |   |   |   |   |   |
+.SUBCKT INA110E_0          1   2   3   4   5   8   9  10
+*
+***** A1_110E SUB-CIRCUIT
+* CONNECTIONS:          NON-INVERTING INPUT
+*                       |   INVERTING INPUT
+*                       |   |   POSITIVE POWER SUPPLY
+*                       |   |   |   NEGATIVE POWER SUPPLY
+*                       |   |   |   |   OUTPUT
+*                       |   |   |   |   |
+X1                     15  17   3   4  11   A1_110E
+*
+***** A2_110E SUB-CIRCUIT
+* CONNECTIONS:          NON-INVERTING INPUT
+*                       |   INVERTING INPUT
+*                       |   |   POSITIVE POWER SUPPLY
+*                       |   |   |   NEGATIVE POWER SUPPLY
+*                       |   |   |   |   OUTPUT
+*                       |   |   |   |   |
+X2                     15  16   3   4  12   A2_110E
+*
+***** A3_110E SUB-CIRCUIT
+* CONNECTIONS:          NON-INVERTING INPUT
+*                       |   INVERTING INPUT
+*                       |   |   POSITIVE POWER SUPPLY
+*                       |   |   |   NEGATIVE POWER SUPPLY
+*                       |   |   |   |   OUTPUT
+*                       |   |   |   |   |
+X3                     14  13   3   4   5   A3_110E
+*
+R1    11  13   10.0000K
+R2    13   5    9.9995K
+C2    13   5    6.0000PF
+R3    12  14   10.0000K
+R4    14   8   10.0000K
+C4    14   8    5.0000PF
+*
+R1FB   9  11  20.0000K
+CC1   17  11   5.0000PF
+R2FB  10  12  20.0000K
+CC2   16  12   5.0000PF
+*
+RCE   17   9   400MEG
+*
+I1     3  16  DC  50.00E-6
+I2     3  17  DC  50.00E-6
+I3    10   4  DC  50.00E-6
+I4     9   4  DC  50.00E-6
+I5     3  21  DC 200.00E-6
+I6     3  22  DC 200.00E-6
+*
+CG1    9   0  30.0000PF
+CG2   10   0  20.0000PF
+*
+D1    17  15      DX
+D2    16  15      DX
+*
+Q1    16  21  10  QX
+Q2    17  22   9  QX
+*
+J1     4   1  21  JX
+J2     4   2  22  JX
+G11  1 4 POLY(2) (21,1) (4,1) 0 1E-12 1E-12
+G21  2 4 POLY(2) (22,2) (4,2) 0 1E-12 1E-12
+*
+V1     3  15  DC  3.000
+*
+C1CM   1   0   1.0PF
+C2CM   2   0   1.0PF
+CDIF   1   2   6.0PF
+*
+.MODEL DX D(IS=1.0E-24)
+.MODEL QX NPN(IS=800.0E-18 BF=500)
+.MODEL JX PJF(IS=5.00E-12 BETA=500.0E-6 VTO=-1)
+.ENDS
+
+
+.END
